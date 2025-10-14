@@ -1,0 +1,94 @@
+import axios from "axios";
+import { toast } from "react-toastify";
+
+const API_URL = "http://localhost:8080/api/clientes";
+const API_URL_REGISTRE = "http://localhost:8080/api/auth/register";
+
+const getAuthHeaders = () => {
+  const token = localStorage.getItem("token");
+  return {
+    "Content-Type": "application/json",
+    ...(token && { Authorization: `Bearer ${token}` }),
+  };
+};
+
+// Crear cliente
+export const crearCliente = async (clienteData) => {
+  try {
+    const { data } = await axios.post(API_URL, clienteData, {
+      headers: getAuthHeaders(),
+    });
+    toast.success("Cliente creado correctamente");
+    return data;
+  } catch (error) {
+    const message =
+      error.response?.data?.error ||
+      error.message ||
+      "Error al crear cliente";
+    toast.error(message);
+    throw error;
+  }
+};
+
+// Buscar cliente por tipoDocumento y documento
+export const buscarClientePorIdentidad = async (tipoDocumento, documento) => {
+  try {
+    const { data } = await axios.get(
+      `${API_URL}/by-identity?tipoDocumento=${tipoDocumento}&documento=${documento}`,
+      {
+        headers: getAuthHeaders(),
+      }
+    );
+    localStorage.setItem("clienteId", data.cliente.id);
+    return data;
+  } catch (error) {
+    const message =
+      error.response?.data?.message ||
+      error.message ||
+      "Error al buscar cliente";
+    toast.error("No se encontró el cliente");
+    throw error;
+  }
+};
+
+
+// Obtener lista paginada
+export const obtenerClientes = async (page = 0, size = 5, filtros = {}) => {
+  try {
+
+    const params = new URLSearchParams({
+        page,
+        size,
+        ...(filtros.nombre && { nombre: filtros.nombre }),
+        ...(filtros.documento && { documento: filtros.documento }),
+        ...(filtros.email && { email: filtros.email }),
+     });
+    
+    const { data } = await axios.get(`${API_URL}?${params.toString()}`, {
+      headers: getAuthHeaders(),
+    });
+    return data;
+  } catch (error) {
+    const message =
+      error.response?.data?.message ||
+      error.message ||
+      "Error al obtener clientes";
+    //toast.error(message);
+    throw error;
+  }
+};
+
+// Eliminar cliente
+export const eliminarCliente = async (id) => {
+  try {
+    await axios.delete(`${API_URL}/${id}`, { headers: getAuthHeaders() });
+    toast.info("🗑️ Cliente eliminado correctamente");
+  } catch (error) {
+    const message =
+      error.response?.data?.message ||
+      error.message ||
+      "Error al eliminar cliente";
+    //toast.error(message);
+    throw error;
+  }
+};
