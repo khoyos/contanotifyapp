@@ -51,19 +51,17 @@ export const buscarClientePorIdentidad = async (tipoDocumento, documento) => {
   }
 };
 
-
 // Obtener lista paginada
 export const obtenerClientes = async (page = 0, size = 5, filtros = {}) => {
   try {
-
     const params = new URLSearchParams({
-        page,
-        size,
-        ...(filtros.nombre && { nombre: filtros.nombre }),
-        ...(filtros.documento && { documento: filtros.documento }),
-        ...(filtros.email && { email: filtros.email }),
-     });
-    
+      page,
+      size,
+      ...(filtros.nombre && { nombre: filtros.nombre }),
+      ...(filtros.documento && { documento: filtros.documento }),
+      ...(filtros.email && { email: filtros.email }),
+    });
+
     const { data } = await axios.get(`${API_URL}?${params.toString()}`, {
       headers: getAuthHeaders(),
     });
@@ -73,7 +71,41 @@ export const obtenerClientes = async (page = 0, size = 5, filtros = {}) => {
       error.response?.data?.message ||
       error.message ||
       "Error al obtener clientes";
-    //toast.error(message);
+    throw error;
+  }
+};
+
+// Obtener cliente por ID
+export const obtenerClientePorId = async (id) => {
+  try {
+    const { data } = await axios.get(`${API_URL}/${id}`, {
+      headers: getAuthHeaders(),
+    });
+    return data;
+  } catch (error) {
+    const message =
+      error.response?.data?.message ||
+      error.message ||
+      "Error al obtener cliente";
+    toast.error(message);
+    throw error;
+  }
+};
+
+// Actualizar cliente
+export const actualizarCliente = async (id, clienteData) => {
+  try {
+    const { data } = await axios.put(`${API_URL}/${id}`, clienteData, {
+      headers: getAuthHeaders(),
+    });
+    toast.success("Cliente actualizado correctamente");
+    return data;
+  } catch (error) {
+    const message =
+      error.response?.data?.error ||
+      error.message ||
+      "Error al actualizar cliente";
+    toast.error(message);
     throw error;
   }
 };
@@ -82,13 +114,12 @@ export const obtenerClientes = async (page = 0, size = 5, filtros = {}) => {
 export const eliminarCliente = async (id) => {
   try {
     await axios.delete(`${API_URL}/${id}`, { headers: getAuthHeaders() });
-    toast.info("🗑️ Cliente eliminado correctamente");
+    toast.info("Cliente eliminado correctamente");
   } catch (error) {
     const message =
       error.response?.data?.message ||
       error.message ||
       "Error al eliminar cliente";
-    //toast.error(message);
     throw error;
   }
 };

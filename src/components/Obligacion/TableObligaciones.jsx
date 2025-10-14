@@ -59,7 +59,7 @@ const TableObligaciones = ({
             ) : (
               <tr>
                 <td colSpan="5" className="text-center p-6 text-gray-500">
-                  No hay clientes registrados
+                  No hay configuraciónes registradas
                 </td>
               </tr>
             )}

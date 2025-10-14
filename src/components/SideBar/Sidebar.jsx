@@ -1,7 +1,5 @@
 import { useState } from "react";
 import { FaHome, FaUser, FaCog, FaBars, FaArchive } from "react-icons/fa";
-import { BsTable } from "react-icons/bs";
-import { FaCloudUploadAlt } from "react-icons/fa";
 import { BsPeopleFill } from "react-icons/bs";
 import { TbReportMoney } from "react-icons/tb";
 

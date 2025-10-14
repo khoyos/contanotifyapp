@@ -6,10 +6,10 @@ import PrivateRoute from "./components/PrivateRoute";
 import { AuthProvider } from "./context/AuthContext";
 import Dashboard from "./pages/Dashboard";
 import Clientes from "./pages/Clientes";
-import CrearCliente from "./components/cliente/CrearCliente";
 import { ToastContainer } from "react-toastify"; 
 import "react-toastify/dist/ReactToastify.css";   
 import ConfiguracionObligaciones from "./pages/ConfiguracionObligaciones";
+import ClienteForm from "./components/cliente/ClienteForm";
 
 export default function App() {
   return (
@@ -25,14 +25,15 @@ export default function App() {
             {/* Rutas hijas de /home (Outlet dentro de Home) */}
             <Route index element={<Dashboard />} /> 
             <Route path="clientes" element={<Clientes />} />
-            <Route path="crear-cliente" element={<CrearCliente />} />
+            <Route path="crear-cliente" element={<ClienteForm />} />
+            <Route path="editar-cliente/:id" element={<ClienteForm />} />
             <Route path="crear-obligaciones" element={<ConfiguracionObligaciones />} />
           </Route>
         </Route>
       </Routes>
       <ToastContainer
-        position="top-right"
-        autoClose={3000}
+        position="top-center"
+        autoClose={3500}
         hideProgressBar={false}
         newestOnTop
         closeOnClick

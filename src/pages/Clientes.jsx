@@ -1,56 +1,41 @@
 import React, { useEffect, useState } from "react";
+import TableClientes from "../components/cliente/TableClientes";
 import { obtenerClientes, eliminarCliente } from "../services/ClienteService";
-import { PlusCircle, Search } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import TableClientes from "../components/cliente/TableClientes";
+import { Search } from "lucide-react";
 
 const Clientes = () => {
   const [clientes, setClientes] = useState([]);
-  const [page, setPage] = useState(0);
-  const [totalPages, setTotalPages] = useState(0);
   const [loading, setLoading] = useState(false);
+  const [page, setPage] = useState(0);
+  const [totalPages, setTotalPages] = useState(1);
   const [filtros, setFiltros] = useState({
     nombre: "",
     documento: "",
     email: "",
   });
-
   const navigate = useNavigate();
 
-  const cargarClientes = async (pagina = 0, filtrosActuales = filtros) => {
+
+  const loadClientes = async (pagina = 0, filtrosActuales = filtros) => {
     try {
       setLoading(true);
-      const data = await obtenerClientes(pagina, 5, filtrosActuales);
-      setClientes(data.content || []);
+      const data = await obtenerClientes(pagina, 5 , filtrosActuales); // tu servicio debe aceptar paginación
+      setClientes(data.content || data);
       setTotalPages(data.totalPages || 1);
       setPage(pagina);
     } catch (error) {
-      console.error(error);
       toast.error("Error al cargar clientes");
+      console.error(error);
     } finally {
       setLoading(false);
     }
   };
 
-  useEffect(() => {
-    cargarClientes(0);
-  }, []);
-
-  const handleDelete = async (id) => {
-    if (!window.confirm("¿Seguro que deseas eliminar este cliente?")) return;
-    try {
-      await eliminarCliente(id);
-      toast.success("Cliente eliminado correctamente");
-      cargarClientes(page);
-    } catch (error) {
-      toast.error("Error al eliminar cliente");
-    }
-  };
-
   const handleBuscar = (e) => {
     e.preventDefault();
-    cargarClientes(0, filtros);
+    loadClientes(0, filtros);
   };
 
   const handleChange = (e) => {
@@ -58,24 +43,44 @@ const Clientes = () => {
     setFiltros({ ...filtros, [name]: value });
   };
 
+  useEffect(() => {
+    loadClientes();
+  }, [page]);
+
+  const handleEdit = (id) => {
+    navigate(`/home/editar-cliente/${id}`);
+  };
+
+  const handleDelete = async (id) => {
+    if (!window.confirm("¿Seguro que deseas eliminar este cliente?")) return;
+    try {
+      await eliminarCliente(id);
+      toast.success("Cliente eliminado correctamente");
+      loadClientes();
+    } catch (error) {
+      toast.error("Error al eliminar cliente");
+      console.error(error);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-slate-50 flex flex-col items-center py-10">
       <div className="bg-white rounded-xl shadow-md w-full max-w-6xl p-6">
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-2xl font-semibold text-gray-800">Clientes</h2>
-          <button
-            onClick={() => navigate("/home/crear-cliente")}
-            className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition"
-          >
-            <PlusCircle size={18} /> Nuevo Cliente
-          </button>
+			<button
+			  onClick={() => navigate("/home/crear-cliente")}
+			  className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700"
+			>
+			  + Nuevo Cliente
+			</button>
         </div>
 
-        {/* 🔍 Barra de búsqueda */}
-        <form
+        {/*Barra de búsqueda */}
+		    <form
           onSubmit={handleBuscar}
           className="grid grid-cols-1 md:grid-cols-4 gap-3 mb-6"
-        >
+          >
           <input
             type="text"
             name="nombre"
@@ -113,11 +118,13 @@ const Clientes = () => {
           loading={loading}
           page={page}
           totalPages={totalPages}
-          onPrev={() => cargarClientes(page - 1, filtros)}
-          onNext={() => cargarClientes(page + 1, filtros)}
-          onEdit={(id) => navigate(`/home/editar-cliente/${id}`)}
+          onPrev={() => loadClientes(page - 1, filtros)}
+          onNext={() => loadClientes(page + 1, filtros)}
+          onEdit={handleEdit}
           onDelete={handleDelete}
         />
+
+
       </div>
     </div>
   );

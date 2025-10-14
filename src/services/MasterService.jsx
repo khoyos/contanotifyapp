@@ -12,7 +12,7 @@ const getAuthHeaders = () => {
   };
 };
 
-// ✅ Consultar entidades
+//Consultar entidades
 export const obtenerEntidades = async () => {
   try {
     const { data } = await axios.get(`${API_URL}/entidades`, {
@@ -29,7 +29,7 @@ export const obtenerEntidades = async () => {
   }
 };
 
-// ✅ Consultar obligaciones
+// Consultar obligaciones
 export const obtenerObligaciones = async () => {
   try {
     const { data } = await axios.get(`${API_URL}/obligaciones`, {
@@ -46,7 +46,7 @@ export const obtenerObligaciones = async () => {
   }
 };
 
-// ✅ Consultar pagos según el id de la renta seleccionada
+//Consultar pagos según el id de la renta seleccionada
 export const obtenerPagosPorRenta = async (idRenta) => {
   try {
     const { data } = await axios.post(

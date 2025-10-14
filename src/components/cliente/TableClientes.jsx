@@ -28,7 +28,7 @@ const TableClientes = ({
           <tbody>
             {loading ? (
               <tr>
-                <td colSpan="5" className="text-center p-6 text-gray-500">
+                <td colSpan="6" className="text-center p-6 text-gray-500">
                   Cargando clientes...
                 </td>
               </tr>
@@ -36,7 +36,7 @@ const TableClientes = ({
               clientes.map((c) => (
                 <tr key={c.id} className="hover:bg-slate-50 transition">
                   <td className="p-3 border-b">{c.nombre}</td>
-                   <td className="p-3 border-b">{c.tipoDocumento}</td>
+                  <td className="p-3 border-b">{c.tipoDocumento}</td>
                   <td className="p-3 border-b">{c.documento}</td>
                   <td className="p-3 border-b">{c.email}</td>
                   <td className="p-3 border-b">{c.telefono}</td>
@@ -58,7 +58,7 @@ const TableClientes = ({
               ))
             ) : (
               <tr>
-                <td colSpan="5" className="text-center p-6 text-gray-500">
+                <td colSpan="6" className="text-center p-6 text-gray-500">
                   No hay clientes registrados
                 </td>
               </tr>
