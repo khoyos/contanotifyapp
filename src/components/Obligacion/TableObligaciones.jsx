@@ -1,5 +1,9 @@
 import React from "react";
 import { Trash2, Edit } from "lucide-react";
+import dayjs from "dayjs";
+import "dayjs/locale/es"; // para idioma español
+
+dayjs.locale("es");
 
 const TableObligaciones = ({
   obligaciones,
@@ -8,9 +12,9 @@ const TableObligaciones = ({
   totalPages,
   onPrev,
   onNext,
-  onEdit,
   onDelete,
 }) => {
+
   return (
     <div>
       <div className="overflow-x-auto">
@@ -39,14 +43,8 @@ const TableObligaciones = ({
                   <td className="p-3 border-b">{c.entidad}</td>
                   <td className="p-3 border-b">{c.renta}</td>
                   <td className="p-3 border-b">{c.pago}</td>
-                  <td className="p-3 border-b">{c.fecha}</td>
+                  <td className="p-3 border-b">{dayjs(c.fecha).format("DD [de] MMMM [de] YYYY")}</td>
                   <td className="p-3 border-b text-center">
-                    <button
-                      onClick={() => onEdit(c.id)}
-                      className="text-blue-600 hover:text-blue-800 mx-2"
-                    >
-                      <Edit size={18} />
-                    </button>
                     <button
                       onClick={() => onDelete(c.id)}
                       className="text-red-600 hover:text-red-800 mx-2"

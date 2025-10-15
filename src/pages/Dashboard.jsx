@@ -1,78 +1,138 @@
+import dayjs from "dayjs";
+import "dayjs/locale/es";
+import { useEffect, useState } from "react";
+import { obtenerAlertasCriticas } from "../services/MasterService";
+import { useAuth } from "../context/AuthContext";
+
+dayjs.locale("es");
+
 export default function Dashboard() {
+
+  //const { userId } = useAuth();
+
+  const [loading, setLoading] = useState(false);
+  const [alertas, setAlertas] = useState([]);
+
+  const cargarAlertasCriticas = async () => {
+      try {
+        const userId = localStorage.getItem("userId");
+        const data = await obtenerAlertasCriticas(userId);
+        console.log("respons alertas", userId);
+        setAlertas(data.alertas);
+      } catch (error) {
+        console.error("Error al cargar obligaciones:", error);
+      }
+    };
+    
+    useEffect(() => {
+      cargarAlertasCriticas();
+    }, []);
+
+
   return (
     <div className="p-4">
-      <div class="mb-8">
-        <h2 class="text-2xl font-bold text-gray-900 mb-4">
-          🚨 Alertas Críticas
-        </h2>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <div class="bg-red-50 border-l-4 border-red-500 p-4 rounded-lg card-shadow alert-urgent">
-            <div class="flex items-center justify-between mb-2">
-              <h3 class="font-semibold text-red-800">
-                Vence HOY - 15 Dic 2024
-              </h3>
-              <span class="bg-red-500 text-white px-2 py-1 rounded-full text-xs">
-                URGENTE
-              </span>
-            </div>
-            <p class="text-red-700 font-medium">Constructora ABC S.A.S</p>
-            <p class="text-red-600 text-sm">Impuesto de Renta - Período 2024</p>
-            <div class="mt-3 flex space-x-2">
-              <button class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-sm transition-colors">
-                Notificar Cliente
-              </button>
-              <button class="bg-gray-200 hover:bg-gray-300 text-gray-700 px-3 py-1 rounded text-sm transition-colors">
-                Ver Detalles
-              </button>
+      {/* --- ALERTAS CRÍTICAS --- */}
+      <div className="p-4">
+        <div className="mb-8">
+          <h2 className="text-2xl font-bold text-gray-900 mb-4">
+            Alertas Críticas
+          </h2>
+          {/* Urgentes */}
+          <div className="mb-6">
+            <h3 className="text-lg font-semibold text-red-600 mb-2">Urgentes</h3>
+
+            {/* Contenedor que maneja el scroll horizontal local */}
+            <div className="relative">
+              <div className="flex gap-4 overflow-x-auto pb-4 px-1 scrollbar-thin scrollbar-thumb-red-300 scrollbar-track-transparent">
+                {alertas
+                  .filter((a) => a.urgente)
+                  .map((alerta, index) => (
+                    <div
+                      key={`${alerta.id}-${index}`}
+                      className="bg-red-50 border-l-4 border-red-500 p-4 rounded-lg flex-shrink-0 w-72 shadow-sm hover:shadow-md transition-shadow duration-200"
+                    >
+                      <div className="flex items-center justify-between mb-2">
+                        <h3 className="font-semibold text-red-800 text-sm">
+                          Vence Mañana -{" "}
+                          {dayjs(alerta.fechaVencimiento).format(
+                            "DD [de] MMMM [de] YYYY"
+                          )}
+                        </h3>
+                        <span className="bg-red-500 text-white px-2 py-1 rounded-full text-xs">
+                          URGENTE
+                        </span>
+                      </div>
+                      <p className="text-red-700 font-medium">{alerta.nombreCliente}</p>
+                      <p className="text-red-600 text-sm">{alerta.obligacionRenta}</p>
+                      <p className="text-red-600 text-sm">{alerta.obligacionPago}</p>
+                    </div>
+                  ))}
+              </div>
             </div>
           </div>
 
-          <div class="bg-orange-50 border-l-4 border-orange-500 p-4 rounded-lg card-shadow">
-            <div class="flex items-center justify-between mb-2">
-              <h3 class="font-semibold text-orange-800">
-                Vence en 3 días - 18 Dic 2024
-              </h3>
-              <span class="bg-orange-500 text-white px-2 py-1 rounded-full text-xs">
-                ALTA
-              </span>
-            </div>
-            <p class="text-orange-700 font-medium">Restaurante El Buen Sabor</p>
-            <p class="text-orange-600 text-sm">IVA Bimestral - Nov-Dec 2024</p>
-            <div class="mt-3 flex space-x-2">
-              <button class="bg-orange-500 hover:bg-orange-600 text-white px-3 py-1 rounded text-sm transition-colors">
-                Notificar Cliente
-              </button>
-              <button class="bg-gray-200 hover:bg-gray-300 text-gray-700 px-3 py-1 rounded text-sm transition-colors">
-                Ver Detalles
-              </button>
+          {/* Alta prioridad */}
+          <div className="mb-6">
+            <h3 className="text-lg font-semibold text-orange-600 mb-2">Alta Prioridad</h3>
+            <div className="w-full overflow-x-auto">
+              <div className="flex space-x-4 min-w-full">
+                {alertas
+                  .filter((a) => a.alta)
+                  .map((alerta, index) => (
+                    <div
+                      key={index}
+                      className="bg-orange-50 border-l-4 border-orange-500 p-4 rounded-lg flex-shrink-0 w-72 shadow-sm"
+                    >
+                      <div className="flex items-center justify-between mb-2">
+                        <h3 className="font-semibold text-orange-800 text-sm">
+                          Vence en 3 días - {dayjs(alerta.fechaVencimiento).format("DD [de] MMMM [de] YYYY")}
+                        </h3>
+                        <span className="bg-orange-500 text-white px-2 py-1 rounded-full text-xs">
+                          ALTA
+                        </span>
+                      </div>
+                      <p className="text-orange-700 font-medium">{alerta.nombreCliente}</p>
+                      <p className="text-orange-600 text-sm">{alerta.obligacionRenta}</p>
+                      <p className="text-orange-600 text-sm">{alerta.obligacionPago}</p>
+                    </div>
+                  ))}
+              </div>
             </div>
           </div>
 
-          <div class="bg-yellow-50 border-l-4 border-yellow-500 p-4 rounded-lg card-shadow">
-            <div class="flex items-center justify-between mb-2">
-              <h3 class="font-semibold text-yellow-800">
-                Vence en 7 días - 22 Dic 2024
-              </h3>
-              <span class="bg-yellow-500 text-white px-2 py-1 rounded-full text-xs">
-                MEDIA
-              </span>
-            </div>
-            <p class="text-yellow-700 font-medium">Tienda La Esquina Ltda</p>
-            <p class="text-yellow-600 text-sm">ICA - Cuarto Trimestre 2024</p>
-            <div class="mt-3 flex space-x-2">
-              <button class="bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-1 rounded text-sm transition-colors">
-                Notificar Cliente
-              </button>
-              <button class="bg-gray-200 hover:bg-gray-300 text-gray-700 px-3 py-1 rounded text-sm transition-colors">
-                Ver Detalles
-              </button>
+          {/* Prioridad media */}
+          <div className="mb-6">
+            <h3 className="text-lg font-semibold text-yellow-600 mb-2">Prioridad Media</h3>
+            <div className="w-full overflow-x-auto">
+              <div className="flex space-x-4 min-w-full">
+                {alertas
+                  .filter((a) => a.media)
+                  .map((alerta, index) => (
+                    <div
+                      key={index}
+                      className="bg-yellow-50 border-l-4 border-yellow-500 p-4 rounded-lg flex-shrink-0 w-72 shadow-sm"
+                    >
+                      <div className="flex items-center justify-between mb-2">
+                        <h3 className="font-semibold text-yellow-800 text-sm">
+                          Vence en 5 días - {dayjs(alerta.fechaVencimiento).format("DD [de] MMMM [de] YYYY")}
+                        </h3>
+                        <span className="bg-yellow-500 text-white px-2 py-1 rounded-full text-xs">
+                          MEDIA
+                        </span>
+                      </div>
+                      <p className="text-yellow-700 font-medium">{alerta.nombreCliente}</p>
+                      <p className="text-yellow-600 text-sm">{alerta.obligacionRenta}</p>
+                      <p className="text-yellow-600 text-sm">{alerta.obligacionPago}</p>
+                    </div>
+                  ))}
+              </div>
             </div>
           </div>
         </div>
       </div>
 
 
-
+      {/* --- ESTADÍSTICAS --- */}
       <div class="bg-white rounded-lg card-shadow">
         <h2 class="text-2xl font-bold text-gray-900 mb-4">📊 Estadísticas</h2>
               {/* <!-- estadisticas graficas --> */}
@@ -153,7 +213,7 @@ export default function Dashboard() {
             <span class="font-semibold text-orange-600">8</span>
           </div>
         </div>
-      </div>
+        </div>
     </div>
   );
 }

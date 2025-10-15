@@ -65,4 +65,20 @@ export const obtenerPagosPorRenta = async (idRenta) => {
   }
 };
 
+export const obtenerAlertasCriticas = async (userId) => {
+  try {
+    const { data } = await axios.get(`${API_URL}/dashboard?userId=${userId}`, {
+      headers: getAuthHeaders(),
+    });
+    return data; // Se espera que el backend devuelva un arreglo de objetos u opciones
+  } catch (error) {
+    const message =
+      error.response?.data?.message ||
+      error.message ||
+      "Error al obtener las entidades";
+    toast.error(message);
+    throw error;
+  }
+};
+
 

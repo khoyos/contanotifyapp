@@ -28,10 +28,10 @@ export default function Navbar() {
         <div>
           <p className="font-semibold leading-tight">{user}</p>
         </div>
-        <div className="w-10 h-10 flex items-center justify-center bg-teal-600 text-white font-bold rounded-full">
+        <div className="w-10 h-10 flex items-center justify-center bg-slate-900 text-white font-bold rounded-full">
           <button
             onClick={() => setOpenMenu(!openMenu)}
-            className="w-9 h-9 sm:w-10 sm:h-10 flex items-center justify-center rounded-full bg-teal-600 text-white font-bold border border-gray-300"
+            className="w-9 h-9 sm:w-10 sm:h-10 flex items-center justify-center rounded-full bg-slate-900"
           >
             {user.charAt(0).toUpperCase()}
           </button>
@@ -41,31 +41,27 @@ export default function Navbar() {
         {openMenu && (
           <div className="absolute right-0 top-full mt-2 w-56 sm:w-64 bg-white text-black rounded-lg shadow-lg p-4 z-50">
             <div className="flex items-center gap-3 pb-3 border-b border-gray-200">
-              <div className="w-10 h-10 flex items-center justify-center rounded-full bg-teal-600 text-white font-bold">
+              <div className="w-10 h-10 flex items-center justify-center rounded-full bg-slate-900 text-white font-bold">
                 {user.charAt(0).toUpperCase()}
               </div>
               <div>
                 <p className="font-semibold">{user.name}</p>
                 <p className="text-sm text-gray-500">{user.username}</p>
-                <NavLink 
+                <p className="w-full text-left px-3 py-2 rounded">Contador Publico</p>
+                {/*<NavLink 
                   to={"/home/profile"}
                   end
                   className="text-blue-600 text-sm"
                 >
                   Ver tu perfil
-                </NavLink>
+                </NavLink>*/}
               </div>
             </div>
 
             <ul className="mt-3 flex flex-col gap-2">
               <li>
                 <button className="w-full text-left px-3 py-2 rounded hover:bg-gray-100">
-                  Cuenta de Google
-                </button>
-              </li>
-              <li>
-                <button className="w-full text-left px-3 py-2 rounded hover:bg-gray-100">
-                  Cambiar de cuenta
+                  Ayuda
                 </button>
               </li>
               <li>

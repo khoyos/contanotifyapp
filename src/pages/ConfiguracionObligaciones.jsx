@@ -10,7 +10,6 @@ import { Save, Search, Edit, Trash2 } from "lucide-react";
 import { Switch } from "@headlessui/react";
 import { buscarClientePorIdentidad } from "../services/ClienteService";
 import { obtenerEntidades, obtenerObligaciones, obtenerPagosPorRenta } from "../services/MasterService";
-import { set } from "react-hook-form";
 import TableObligaciones from "../components/Obligacion/TableObligaciones";
 import { useNavigate } from "react-router-dom";
 
@@ -207,7 +206,7 @@ const ConfiguracionObligaciones = () => {
   const handleGuardarTodo = async () => {
     try {
       //Guardar configuración del cliente
-      console.log("Guardando configuración del cliente...", formConfig);
+      //console.log("Guardando configuración del cliente...", formConfig);
 
       const request = {
         usuarioId: localStorage.getItem("userId"),
@@ -220,8 +219,8 @@ const ConfiguracionObligaciones = () => {
         notificarEmail: true
       }
 
-      console.log("Request configuración:", request);
-      const configResponse = await guardarConfiguracionCliente(request);
+      //console.log("Request configuración:", request);
+      await guardarConfiguracionCliente(request);
 
       // Validar respuesta y obtener el ID del cliente configurado
       //console.log("Respuesta de configuración:", configResponse);
@@ -245,14 +244,15 @@ const ConfiguracionObligaciones = () => {
         entidad: entidadData.name,
         renta: rentaData.name,
         pago: pagoData.name,
-        fecha: obligacionResponse.fecha
+        fecha: obligacionResponse.fecha,
+        obligacionClienteId: obligacionResponse.obligacionClienteId
       };
 
-      const configuracionObligacionesResponse = guardarConfiguracionObligaciones(configuracionObligacionData)
-      console.log("Respuesta de configuracion obligacion data:", configuracionObligacionData);
+      await guardarConfiguracionObligaciones(configuracionObligacionData)
+      //console.log("Respuesta de configuracion obligacion data:", configuracionObligacionData);
 
       toast.success("Obligación registrada correctamente");
-      
+
       cargarConfiguracionObligaciones(0);
 
       limpiarFormulario();
@@ -265,7 +265,7 @@ const ConfiguracionObligaciones = () => {
         "Error al guardar configuración y obligación"
       );
     }
-      
+
     cargarConfiguracionObligaciones(0);
 
   };
@@ -297,27 +297,39 @@ const ConfiguracionObligaciones = () => {
     }
   };
 
+  const handleBuscar = (e) => {
+    e.preventDefault();
+    cargarConfiguracionObligaciones(0, filtros);
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFiltros({ ...filtros, [name]: value });
+  };
+
 
   return (
-    <div className="min-h-screen bg-slate-50 flex flex-col items-center py-10">
-      <div className="bg-white rounded-2xl shadow-md w-full max-w-7xl p-8">
+    <div className="min-h-screen bg-slate-50 flex flex-col items-center py-6 px-3 sm:px-6">
+      <div className="bg-white rounded-2xl shadow-md w-full max-w-7xl p-5 sm:p-8">
         {/* --- Header Configuración --- */}
-        <div className="flex justify-between items-center mb-6">
-          <h2 className="text-2xl font-bold text-gray-800">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+          <h2 className="text-xl sm:text-2xl font-bold text-gray-800">
             Configuración de Obligaciones
           </h2>
           <button
             onClick={handleGuardarTodo}
-            className="flex items-center gap-2 px-5 py-2.5 bg-green-600 text-white rounded-lg hover:bg-green-700 transition"
+            className="flex items-center justify-center gap-2 px-4 sm:px-5 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition w-full sm:w-auto"
           >
             <Save size={18} /> Guardar
           </button>
         </div>
+
         <p className="text-gray-500 text-sm mb-5">
           Control de configuración de obligaciones a Clientes
         </p>
 
-        <div className="grid grid-cols-3 md:grid-cols-5 gap-4 mb-6">
+        {/* --- Filtros superiores --- */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 mb-6">
           {/* --- Tipo Documento --- */}
           <div>
             <label className="block text-sm text-gray-700 mb-1">
@@ -336,10 +348,8 @@ const ConfiguracionObligaciones = () => {
           </div>
 
           {/* --- Documento + Lupa --- */}
-          <div className="col-span-2">
-            <label className="block text-sm text-gray-700 mb-1">
-              Documento:
-            </label>
+          <div className="sm:col-span-2">
+            <label className="block text-sm text-gray-700 mb-1">Documento:</label>
             <div className="flex items-center gap-2">
               <input
                 name="documento"
@@ -357,9 +367,8 @@ const ConfiguracionObligaciones = () => {
             </div>
           </div>
 
-
           {/* --- Nombre --- */}
-          <div className="col-span-2">
+          <div className="sm:col-span-2">
             <label className="block text-sm text-gray-700 mb-1">Nombre:</label>
             <input
               name="nombre"
@@ -372,8 +381,8 @@ const ConfiguracionObligaciones = () => {
           </div>
         </div>
 
-
-        <div className="grid grid-cols-3 md:grid-cols-5 gap-4 mb-6">
+        {/* --- Segunda fila de filtros --- */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 mb-6">
           {/* --- Entidades --- */}
           <div>
             <label className="block text-sm text-gray-700 mb-1">Entidades:</label>
@@ -393,8 +402,10 @@ const ConfiguracionObligaciones = () => {
           </div>
 
           {/* --- Rentas --- */}
-          <div className="col-span-2">
-            <label className="block text-sm text-gray-700 mb-1">Rentas Obligaciones:</label>
+          <div className="sm:col-span-2">
+            <label className="block text-sm text-gray-700 mb-1">
+              Rentas Obligaciones:
+            </label>
             <select
               name="renta"
               value={selectedRenta}
@@ -410,9 +421,8 @@ const ConfiguracionObligaciones = () => {
             </select>
           </div>
 
-
           {/* --- Pagos --- */}
-          <div className="col-span-2">
+          <div className="sm:col-span-2">
             <label className="block text-sm text-gray-700 mb-1">Pagos:</label>
             <select
               name="pago"
@@ -437,7 +447,6 @@ const ConfiguracionObligaciones = () => {
               ))}
             </select>
 
-            {/* Mensaje de error */}
             {errorPagos && (
               <p className="text-red-600 text-sm mt-2">
                 No se encontró ningún pago con la renta seleccionada.
@@ -447,7 +456,7 @@ const ConfiguracionObligaciones = () => {
         </div>
 
         {/* --- Switches --- */}
-        <div className="flex gap-10 mb-10">
+        <div className="flex flex-col sm:flex-row gap-6 sm:gap-10 mb-10">
           <div className="flex items-center gap-3">
             <Switch
               checked={formConfig.notificarCliente}
@@ -459,8 +468,8 @@ const ConfiguracionObligaciones = () => {
             >
               <span
                 className={`${formConfig.notificarCliente
-                    ? "translate-x-6"
-                    : "translate-x-1"
+                  ? "translate-x-6"
+                  : "translate-x-1"
                   } inline-block h-4 w-4 transform bg-white rounded-full transition`}
               />
             </Switch>
@@ -478,8 +487,8 @@ const ConfiguracionObligaciones = () => {
             >
               <span
                 className={`${formConfig.notificarContador
-                    ? "translate-x-6"
-                    : "translate-x-1"
+                  ? "translate-x-6"
+                  : "translate-x-1"
                   } inline-block h-4 w-4 transform bg-white rounded-full transition`}
               />
             </Switch>
@@ -488,47 +497,75 @@ const ConfiguracionObligaciones = () => {
         </div>
 
         {/* --- Tabla --- */}
-        <div className="border-t pt-6">
-          <div className="flex justify-between items-center mb-4">
-            <div className="flex gap-2 w-full">
-              <input
-                placeholder="Nombre"
-                className="border rounded-md p-2 w-1/4"
-              />
-              <select className="border rounded-md p-2 w-1/4">
-                <option>Entidad</option>
-              </select>
-              <select className="border rounded-md p-2 w-1/4">
-                <option>Renta</option>
-              </select>
-              <select className="border rounded-md p-2 w-1/4">
-                <option>Pagos</option>
-              </select>
-              <input
-                placeholder="Fecha (EJ: FEBRERO/06/2025)"
-                className="border rounded-md p-2 w-1/3"
-              />
-              <button className="flex items-center gap-2 bg-green-600 text-white px-4 rounded-md hover:bg-green-700 transition">
-                <Search size={18} /> Buscar
-              </button>
+        <div className="border-t pt-6 overflow-x-auto">
+          <form onSubmit={handleBuscar} >
+            <div className="flex flex-col xl:flex-row xl:items-center xl:justify-between mb-4 gap-3">
+              <div className="flex flex-wrap gap-2 w-full">
+                <input
+                  type="text"
+                  name="nombre"
+                  value={filtros.nombre}
+                  onChange={handleChange}
+                  placeholder="Buscar por Nombre"
+                  className="border rounded-md p-2 flex-1 min-w-[130px]"
+                />
+
+                <input
+                  type="text"
+                  name="entidad"
+                  value={filtros.entidad}
+                  onChange={handleChange}
+                  placeholder="Buscar por Entidad"
+                  className="border rounded-md p-2 flex-1 min-w-[130px]"
+                />
+
+                <input
+                  type="text"
+                  name="renta"
+                  value={filtros.renta}
+                  onChange={handleChange}
+                  placeholder="Buscar por Renta"
+                  className="border rounded-md p-2 flex-1 min-w-[130px]"
+                />
+
+                <input
+                  type="text"
+                  name="pago"
+                  value={filtros.pago}
+                  onChange={handleChange}
+                  placeholder="Buscar por Pago"
+                  className="border rounded-md p-2 flex-1 min-w-[130px]"
+                />
+
+                <input
+                  type="text"
+                  name="fecha"
+                  value={filtros.fecha}
+                  onChange={handleChange}
+                  placeholder="Fecha (YYYY-MM-DD)"
+                  className="border rounded-md p-2 flex-1 min-w-[180px]"
+                />
+                <button className="flex items-center justify-center gap-2 bg-green-600 hover:bg-green-700 text-white rounded-md p-2 transition">
+                  <Search size={18} /> Buscar
+                </button>
+              </div>
             </div>
-          </div>
+          </form>
 
           <TableObligaciones
             obligaciones={configuracionObligacionesList}
             loading={loading}
             page={page}
             totalPages={totalPages}
-            onPrev={() => cargarConfiguracionClientes(page - 1, filtros)}
-            onNext={() => cargarConfiguracionClientes(page + 1, filtros)}
-            onEdit={(id) => navigate(`/home/editar-obligacion/${id}`)}
+            onPrev={() => cargarConfiguracionObligaciones(page - 1, filtros)}
+            onNext={() => cargarConfiguracionObligaciones(page + 1, filtros)}
             onDelete={handleDelete}
           />
-
         </div>
       </div>
     </div>
   );
+
 };
 
 export default ConfiguracionObligaciones;
