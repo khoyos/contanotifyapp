@@ -13,7 +13,7 @@ export default function Landing() {
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                 </svg>
               </div>
-              <span class="text-xl font-bold text-dark-gray">RemberNotify</span>
+              <span class="text-xl font-bold text-dark-gray">ContaNotify</span>
             </div>
             <nav class="hidden md:flex space-x-8">
               <a href="#beneficios" class="text-dark-gray hover:text-primary-blue transition-colors">Beneficios</a>
@@ -190,7 +190,7 @@ export default function Landing() {
               <div class="w-20 h-20 bg-primary-blue rounded-full flex items-center justify-center mx-auto mb-6">
                 <span class="text-2xl font-bold text-white">1</span>
               </div>
-              <h3 class="text-xl font-semibold text-dark-gray mb-4">Configura tus Fechas</h3>
+              <h3 class="text-xl font-semibold text-dark-gray mb-4">Configura Clientes</h3>
               <p class="text-gray-600 mb-6">
                 Ingresa las fechas importantes de tus clientes: declaraciones, pagos de impuestos, vencimientos de documentos y más.
               </p>
@@ -205,7 +205,7 @@ export default function Landing() {
               <div class="w-20 h-20 bg-accent-green rounded-full flex items-center justify-center mx-auto mb-6">
                 <span class="text-2xl font-bold text-white">2</span>
               </div>
-              <h3 class="text-xl font-semibold text-dark-gray mb-4">Personaliza Mensajes</h3>
+              <h3 class="text-xl font-semibold text-dark-gray mb-4">Personaliza Obligaciones</h3>
               <p class="text-gray-600 mb-6">
                 Crea mensajes personalizados para cada tipo de recordatorio. Define cuándo y cómo quieres que se envíen las notificaciones.
               </p>
@@ -400,7 +400,7 @@ export default function Landing() {
           </div>
 
           <div class="border-t border-gray-600 mt-8 pt-8 text-center text-gray-400">
-            <p>&copy; 2024 ContaNotify. Todos los derechos reservados.</p>
+            <p>&copy; 2025 ContaNotify. Todos los derechos reservados.</p>
           </div>
         </div>
       </footer>

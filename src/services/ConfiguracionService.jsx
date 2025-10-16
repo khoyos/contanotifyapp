@@ -84,6 +84,7 @@ export const obtenerConfiguracionObligaciones = async (page = 0, size = 5, filtr
     const params = new URLSearchParams({
         page,
         size,
+        ...(filtros.identidadCliente && { identidadCliente: filtros.identidadCliente }),
         ...(filtros.nombre && { nombre: filtros.nombre }),
         ...(filtros.entidad && { entidad: filtros.entidad }),
         ...(filtros.renta && { renta: filtros.renta }),

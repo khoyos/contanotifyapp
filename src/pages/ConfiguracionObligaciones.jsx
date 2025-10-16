@@ -21,6 +21,7 @@ const ConfiguracionObligaciones = () => {
   const [totalPages, setTotalPages] = useState(0);
   const [loading, setLoading] = useState(false);
   const [filtros, setFiltros] = useState({
+    identidadCliente: "",
     nombre: "",
     entidad: "",
     renta: "",
@@ -38,8 +39,6 @@ const ConfiguracionObligaciones = () => {
   const [rentaData, setRentaData] = useState({ id: "", name: "" });
   const [pagoData, setPagoData] = useState({ id: "", name: "" });
   const [cliente, setCliente] = useState("");
-
-  const navigate = useNavigate();
 
   const initialFormConfig = {
     tipoDocumento: "",
@@ -206,7 +205,7 @@ const ConfiguracionObligaciones = () => {
   const handleGuardarTodo = async () => {
     try {
       //Guardar configuración del cliente
-      //console.log("Guardando configuración del cliente...", formConfig);
+      console.log("Guardando configuración del cliente...", formConfig);
 
       const request = {
         usuarioId: localStorage.getItem("userId"),
@@ -235,11 +234,12 @@ const ConfiguracionObligaciones = () => {
 
       //Guardar la obligación
       const obligacionResponse = await guardarObligacionCliente(obligacionData);
-      //console.log("Respuesta de obligación:", obligacionResponse);
+      //console.log("Identidad :", formConfig.documento);
 
       const configuracionObligacionData = {
         usuarioId: localStorage.getItem("userId"),
         clienteId: localStorage.getItem("clienteId"),
+        identidadCliente: formConfig.documento,
         nombreCliente: cliente,
         entidad: entidadData.name,
         renta: rentaData.name,
@@ -501,6 +501,15 @@ const ConfiguracionObligaciones = () => {
           <form onSubmit={handleBuscar} >
             <div className="flex flex-col xl:flex-row xl:items-center xl:justify-between mb-4 gap-3">
               <div className="flex flex-wrap gap-2 w-full">
+                <input
+                  type="text"
+                  name="identidadCliente"
+                  value={filtros.identidadCliente}
+                  onChange={handleChange}
+                  placeholder="Buscar por Identidad"
+                  className="border rounded-md p-2 flex-1 min-w-[130px]"
+                />
+
                 <input
                   type="text"
                   name="nombre"

@@ -14,13 +14,14 @@ const TableObligaciones = ({
   onNext,
   onDelete,
 }) => {
-
+  console.log("getall obligaciones", obligaciones)
   return (
     <div>
       <div className="overflow-x-auto">
         <table className="w-full border-collapse">
           <thead>
             <tr className="bg-blue-50 text-left">
+              <th className="p-3 border-b">Identidad</th>
               <th className="p-3 border-b">Nombre</th>
               <th className="p-3 border-b">Entidad</th>
               <th className="p-3 border-b">Renta</th>
@@ -39,6 +40,7 @@ const TableObligaciones = ({
             ) : obligaciones.length > 0 ? (
               obligaciones.map((c) => (
                 <tr key={c.id} className="hover:bg-slate-50 transition">
+                  <td className="p-3 border-b">{c.identidadCliente}</td>
                   <td className="p-3 border-b">{c.nombreCliente}</td>
                   <td className="p-3 border-b">{c.entidad}</td>
                   <td className="p-3 border-b">{c.renta}</td>
