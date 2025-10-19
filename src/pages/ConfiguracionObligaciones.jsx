@@ -96,30 +96,12 @@ const ConfiguracionObligaciones = () => {
 
     if (!id) return;
 
-    try {
-      setLoadingPagos(true);
-      const data = await obtenerPagosPorRenta(id);
-      if (Array.isArray(data.pagos) && data.pagos.length > 0) {
+    const selectedRentaObj = obligacionesList.find(r => r.id === e.target.value);
 
-        const selectedRentaObj = obligacionesList.find(r => r.id === e.target.value);
+    console.log("selectedRentaObj", selectedRentaObj);
 
-        setRentaData({
-          id: formConfig.renta,
-          name: selectedRentaObj.name
-        });
+    setRentaData({ id: formConfig.renta, name: selectedRentaObj.name });
 
-        setPagos(data.pagos);
-        setErrorPagos(false);
-      } else {
-        setPagos([]);
-        setErrorPagos(true);
-      }
-    } catch (error) {
-      setErrorPagos(true);
-      setPagos([]);
-    } finally {
-      setLoadingPagos(false);
-    }
   };
 
 
@@ -134,21 +116,6 @@ const ConfiguracionObligaciones = () => {
         name: selectedEntidadObj.name
       });
 
-    }
-  };
-
-  // Al cambiar el pago
-  const handlePagoChange = (e) => {
-    const selectedId = e.target.value;
-    const selectedPagoObj = pagos.find((ent) => ent.id === selectedId);
-    formConfig.pago = selectedId;
-    setSelectedPago(selectedId);
-    if (selectedPagoObj) {
-      console.log("Pago seleccionado:", selectedPagoObj);
-      setPagoData({
-        id: selectedPagoObj.id,
-        name: selectedPagoObj.nombre
-      })
     }
   };
 
@@ -229,26 +196,27 @@ const ConfiguracionObligaciones = () => {
       //Construir la obligación usando el ID obtenido
       const obligacionData = {
         usuarioClienteId: localStorage.getItem("clienteId"),
-        pagoId: formConfig.pago, // suponiendo que selectedRenta representa la obligación seleccionada
+        obligacionRentaId: formConfig.renta, // suponiendo que selectedRenta representa la obligación seleccionada
       };
 
       //Guardar la obligación
       const obligacionResponse = await guardarObligacionCliente(obligacionData);
-      //console.log("Identidad :", formConfig.documento);
+      console.log("obligacionResponse ==>", obligacionResponse);
+      obligacionResponse.pagos.map(async (pago)=>{
+        const configuracionObligacionData = {
+          usuarioId: localStorage.getItem("userId"),
+          clienteId: localStorage.getItem("clienteId"),
+          identidadCliente: formConfig.documento,
+          nombreCliente: cliente,
+          entidad: entidadData.name,
+          renta: rentaData.name,
+          pago: pago.nombrePago,
+          fecha: pago.fecha,
+          obligacionClienteId: pago.obligacionClienteId
+        };     
+         await guardarConfiguracionObligaciones(configuracionObligacionData);
+      });
 
-      const configuracionObligacionData = {
-        usuarioId: localStorage.getItem("userId"),
-        clienteId: localStorage.getItem("clienteId"),
-        identidadCliente: formConfig.documento,
-        nombreCliente: cliente,
-        entidad: entidadData.name,
-        renta: rentaData.name,
-        pago: pagoData.name,
-        fecha: obligacionResponse.fecha,
-        obligacionClienteId: obligacionResponse.obligacionClienteId
-      };
-
-      await guardarConfiguracionObligaciones(configuracionObligacionData)
       //console.log("Respuesta de configuracion obligacion data:", configuracionObligacionData);
 
       toast.success("Obligación registrada correctamente");
@@ -394,7 +362,7 @@ const ConfiguracionObligaciones = () => {
             >
               <option value="">Seleccione...</option>
               {entidadesList.map((entidad, idx) => (
-                <option key={idx} value={entidad.id}>
+                <option key={idx} value={entidad.id} className="capitalize">
                   {entidad.name}
                 </option>
               ))}
@@ -421,38 +389,7 @@ const ConfiguracionObligaciones = () => {
             </select>
           </div>
 
-          {/* --- Pagos --- */}
-          <div className="sm:col-span-2">
-            <label className="block text-sm text-gray-700 mb-1">Pagos:</label>
-            <select
-              name="pago"
-              value={selectedPago}
-              onChange={handlePagoChange}
-              className={`border rounded-md p-2 w-full ${errorPagos ? "border-red-500 bg-red-50" : "border-gray-300"
-                }`}
-              disabled={loadingPagos || !selectedRenta}
-            >
-              <option value="">
-                {loadingPagos
-                  ? "Cargando pagos..."
-                  : errorPagos
-                    ? "Sin resultados"
-                    : "Seleccione..."}
-              </option>
 
-              {pagos.map((pago) => (
-                <option key={pago.id} value={pago.id}>
-                  {pago.nombre || pago.descripcion || pago.id}
-                </option>
-              ))}
-            </select>
-
-            {errorPagos && (
-              <p className="text-red-600 text-sm mt-2">
-                No se encontró ningún pago con la renta seleccionada.
-              </p>
-            )}
-          </div>
         </div>
 
         {/* --- Switches --- */}
