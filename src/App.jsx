@@ -10,6 +10,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";   
 import ConfiguracionObligaciones from "./pages/ConfiguracionObligaciones";
 import ClienteForm from "./components/cliente/ClienteForm";
+import Register from "./pages/Register";
 
 export default function App() {
   return (
@@ -18,7 +19,8 @@ export default function App() {
         {/* Rutas públicas */}
         <Route path="/" element={<Landing />} />
         <Route path="/login" element={<Login />} />
-
+        <Route path="/register" element={<Register />} />
+        
         {/* Rutas privadas */}
         <Route element={<PrivateRoute />}>
           <Route path="/home" element={<Home />}>

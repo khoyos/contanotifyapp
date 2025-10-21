@@ -17,7 +17,7 @@ export default function Login() {
     setLoading(true);
     try {
       const resp = await loginService(email.toLowerCase(), password);
-      login(resp.user, resp.userId, resp.token); 
+      login(resp.user, resp.userId, resp.token);
       navigate("/home");
     } catch (err) {
       setError(err.message);
@@ -58,14 +58,25 @@ export default function Login() {
           {loading ? "Cargando..." : "Ingresar"}
         </button>
 
-        <div className="mt-4 text-center">
-          <p className="text-sm">
+        <div className="mt-4 text-center text-sm">
+          <p>
             ¿Olvidaste tu contraseña?{" "}
             <span
               onClick={() => navigate("/forgot-password")}
               className="text-blue-600 hover:underline cursor-pointer"
             >
               Recupérala aquí
+            </span>
+          </p>
+
+          {/* 👇 Nuevo bloque agregado para ir al registro */}
+          <p className="mt-3">
+            ¿No tienes una cuenta?{" "}
+            <span
+              onClick={() => navigate("/register")}
+              className="text-blue-600 hover:underline cursor-pointer"
+            >
+              Regístrate aquí
             </span>
           </p>
         </div>

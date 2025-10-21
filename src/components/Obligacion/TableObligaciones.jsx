@@ -42,10 +42,10 @@ const TableObligaciones = ({
                 <tr key={c.id} className="hover:bg-slate-50 transition">
                   <td className="p-3 border-b">{c.identidadCliente}</td>
                   <td className="p-3 border-b">{c.nombreCliente}</td>
-                  <td className="p-3 border-b">{c.entidad}</td>
+                  <td className="p-3 border-b">{c.entidad.toUpperCase()}</td>
                   <td className="p-3 border-b">{c.renta}</td>
-                  <td className="p-3 border-b">{c.pago}</td>
-                  <td className="p-3 border-b">{dayjs(c.fecha).format("DD [de] MMMM [de] YYYY")}</td>
+                  <td className="p-3 border-b">{c.pago.toUpperCase()}</td>
+                  <td className="p-3 border-b">{dayjs(c.fecha).format("DD [de] MMMM [de] YYYY").toUpperCase()}</td>
                   <td className="p-3 border-b text-center">
                     <button
                       onClick={() => onDelete(c.id)}

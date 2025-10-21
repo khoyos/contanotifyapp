@@ -35,8 +35,8 @@ const TableClientes = ({
             ) : clientes.length > 0 ? (
               clientes.map((c) => (
                 <tr key={c.id} className="hover:bg-slate-50 transition">
-                  <td className="p-3 border-b">{c.nombre}</td>
-                  <td className="p-3 border-b">{c.tipoDocumento}</td>
+                  <td className="p-3 border-b">{c.nombre.toUpperCase()}</td>
+                  <td className="p-3 border-b">{c.tipoDocumento.toUpperCase()}</td>
                   <td className="p-3 border-b">{c.documento}</td>
                   <td className="p-3 border-b">{c.email}</td>
                   <td className="p-3 border-b">{c.telefono}</td>
@@ -101,4 +101,4 @@ const TableClientes = ({
   );
 };
 
-export default TableClientes;
+export default React.memo(TableClientes);
