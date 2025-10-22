@@ -12,6 +12,7 @@ const Clientes = () => {
   const [totalPages, setTotalPages] = useState(1);
   const [filtros, setFiltros] = useState({
     nombre: "",
+    razonSocial: "",
     documento: "",
     email: "",
   });
@@ -24,6 +25,7 @@ const Clientes = () => {
       try {
         setLoading(true);
         const data = await obtenerClientes(pagina, 5, filtrosActuales);
+        console.log("data cliente", data);
         setClientes(data.content || data);
         setTotalPages(data.totalPages || 1);
 

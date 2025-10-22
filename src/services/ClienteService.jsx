@@ -58,6 +58,7 @@ export const obtenerClientes = async (page = 0, size = 5, filtros = {}) => {
       page,
       size,
       ...(filtros.nombre && { nombre: filtros.nombre }),
+      ...(filtros.razonSocial && { razonSocial: filtros.razonSocial }),
       ...(filtros.documento && { documento: filtros.documento }),
       ...(filtros.email && { email: filtros.email }),
     });

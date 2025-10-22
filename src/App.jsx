@@ -11,6 +11,7 @@ import "react-toastify/dist/ReactToastify.css";
 import ConfiguracionObligaciones from "./pages/ConfiguracionObligaciones";
 import ClienteForm from "./components/cliente/ClienteForm";
 import Register from "./pages/Register";
+import RastreoObligaciones from "./pages/RastreoObligaciones";
 
 export default function App() {
   return (
@@ -30,6 +31,7 @@ export default function App() {
             <Route path="crear-cliente" element={<ClienteForm />} />
             <Route path="editar-cliente/:id" element={<ClienteForm />} />
             <Route path="crear-obligaciones" element={<ConfiguracionObligaciones />} />
+            <Route path="rastreo-obligaciones" element={<RastreoObligaciones />} />
           </Route>
         </Route>
       </Routes>

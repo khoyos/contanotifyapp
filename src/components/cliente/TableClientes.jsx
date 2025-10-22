@@ -18,6 +18,7 @@ const TableClientes = ({
           <thead>
             <tr className="bg-blue-50 text-left">
               <th className="p-3 border-b">Nombre</th>
+              <th className="p-3 border-b">Razon Social</th>
               <th className="p-3 border-b">Tipo Documento</th>
               <th className="p-3 border-b">Documento</th>
               <th className="p-3 border-b">Email</th>
@@ -36,6 +37,7 @@ const TableClientes = ({
               clientes.map((c) => (
                 <tr key={c.id} className="hover:bg-slate-50 transition">
                   <td className="p-3 border-b">{c.nombre.toUpperCase()}</td>
+                  <td className="p-3 border-b">{c.razonSocial.toUpperCase()}</td>
                   <td className="p-3 border-b">{c.tipoDocumento.toUpperCase()}</td>
                   <td className="p-3 border-b">{c.documento}</td>
                   <td className="p-3 border-b">{c.email}</td>

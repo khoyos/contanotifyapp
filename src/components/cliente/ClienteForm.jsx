@@ -20,13 +20,14 @@ const ClienteForm = () => {
     notificar: false,
   });
 
-  // 🧠 Si hay ID, cargar cliente existente
+  // Si hay ID, cargar cliente existente
   useEffect(() => {
     if (id) {
       const fetchCliente = async () => {
         try {
           setLoading(true);
           const cliente = await obtenerClientePorId(id);
+          console.log("cliente.cliente", cliente.cliente);
           setFormData(cliente.cliente);
         } catch (error) {
           toast.error("Error al cargar cliente");

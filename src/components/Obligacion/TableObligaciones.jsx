@@ -14,7 +14,6 @@ const TableObligaciones = ({
   onNext,
   onDelete,
 }) => {
-  console.log("getall obligaciones", obligaciones)
   return (
     <div>
       <div className="overflow-x-auto">

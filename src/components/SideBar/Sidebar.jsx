@@ -3,6 +3,7 @@ import { FaHome, FaBars } from "react-icons/fa";
 import { BsPeopleFill } from "react-icons/bs";
 import { TbReportMoney } from "react-icons/tb";
 import { NavLink } from "react-router-dom";
+import { MdFactCheck } from "react-icons/md";
 
 const Sidebar = () => {
   const [isOpen, setIsOpen] = useState(true);
@@ -21,11 +22,8 @@ const Sidebar = () => {
   const menuItems = [
     { path: "/home", name: "Inicio", icon: <FaHome /> },
     { path: "/home/clientes", name: "Crear Cliente", icon: <BsPeopleFill /> },
-    {
-      path: "/home/crear-obligaciones",
-      name: "Crear Obligaciones",
-      icon: <TbReportMoney />,
-    },
+    { path: "/home/crear-obligaciones", name: "Crear Obligaciones", icon: <TbReportMoney /> },
+    { path: "/home/rastreo-obligaciones", name: "Rastreo Obligaciones", icon: <MdFactCheck /> },
   ];
 
   return (

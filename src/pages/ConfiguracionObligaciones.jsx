@@ -212,7 +212,8 @@ const ConfiguracionObligaciones = () => {
           renta: rentaData.name,
           pago: pago.nombrePago,
           fecha: pago.fecha,
-          obligacionClienteId: pago.obligacionClienteId
+          obligacionClienteId: pago.obligacionClienteId,
+          periodo: pago.periodo
         };     
          await guardarConfiguracionObligaciones(configuracionObligacionData);
       });
