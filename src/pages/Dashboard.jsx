@@ -22,17 +22,17 @@ export default function Dashboard() {
   const [alertas, setAlertas] = useState([]);
 
   const dataBarra = [
-    { name: "Clientes", value: 24 },
+    { name: "Dian", value: 24 },
     { name: "Alertas", value: 8 },
     { name: "Impuestos", value: 156 },
     { name: "Mes", value: 12 },
   ];
 
   const dataPastel = [
-    { name: "Clientes Activos", value: 24 },
-    { name: "Alertas Pendientes", value: 8 },
-    { name: "Impuestos al Día", value: 156 },
-    { name: "Este Mes", value: 12 },
+    { name: "Por Hacer", value: 24 },
+    { name: "Elaboración", value: 8 },
+    { name: "pendientes por documentos", value: 156 },
+    { name: "Declarado y presentado", value: 12 },
   ];
 
   const dataLinea = [
@@ -55,7 +55,7 @@ export default function Dashboard() {
     try {
       const userId = localStorage.getItem("userId");
       const data = await obtenerAlertasCriticas(userId);
-      console.log("respons alertas", userId);
+      console.log("response alertas", data.alertas);
       setAlertas(data.alertas);
     } catch (error) {
       console.error("Error al cargar obligaciones:", error);
@@ -74,7 +74,7 @@ export default function Dashboard() {
         {/* --- GRAFICO DE BARRAS --- */}
         <div className="bg-white rounded-2xl shadow p-4 h-72">
           <h2 className="text-2xl font-bold text-gray-900 mb-4">
-            Comparativo General
+            Comparativo por Entidad
           </h2>
           <ResponsiveContainer width="100%" height="100%">
             <BarChart data={dataBarra}>
@@ -90,7 +90,7 @@ export default function Dashboard() {
         {/* --- GRAFICO DE LINEAS --- */}
         <div className="bg-white rounded-2xl shadow p-4 h-72">
           <h2 className="text-2xl font-bold text-gray-900 mb-4">
-            Tendencia Alertas
+            Tendencia de rentas x mes
           </h2>
           <ResponsiveContainer width="100%" height="100%">
             <LineChart data={dataLinea}>
@@ -107,7 +107,7 @@ export default function Dashboard() {
         {/* --- GRAFICO DE PASTEL --- */}
         <div className="bg-white rounded-2xl shadow p-4 h-72 flex flex-col items-center justify-center">
           <h2 className="text-2xl font-bold text-gray-900 mb-4">
-            Distribución de Indicadores
+            Distribución de Estados
           </h2>
           <ResponsiveContainer width="100%" height="100%">
             <PieChart>
@@ -132,7 +132,7 @@ export default function Dashboard() {
         {/* --- GRAFICO DE AREA --- */}
         <div className="bg-white rounded-2xl shadow p-4 h-72">
           <h2 className="text-2xl font-bold text-gray-900 mb-4">
-            Crecimiento progresivo
+            Crecimiento progresivo Anual
           </h2>
           <ResponsiveContainer width="100%" height="100%">
             <AreaChart data={dataArea}>
@@ -161,7 +161,7 @@ export default function Dashboard() {
       <div className="p-4">
         <div className="mb-8">
           <h2 className="text-2xl font-bold text-gray-900 mb-4">
-            Alertas Críticas
+            📊 ¡¡¡ Alertas Críticas !!!!
           </h2>
 
           {/* Urgentes */}
@@ -183,7 +183,7 @@ export default function Dashboard() {
                       >
                         <div className="flex items-center justify-between mb-2">
                           <h3 className="font-semibold text-red-800 text-sm">
-                            Vence Mañana -{" "}
+                            { alerta.mensaje || " " } - {" "}
                             {dayjs(alerta.fechaVencimiento).format(
                               "DD [de] MMMM [de] YYYY"
                             )}
@@ -295,6 +295,7 @@ export default function Dashboard() {
               )}
             </div>
           </div>
+
         </div>
       </div>
 
@@ -362,26 +363,6 @@ export default function Dashboard() {
                 <p class="text-gray-600 text-sm">Este Mes</p>
               </div>
             </div>
-          </div>
-        </div>
-        <div class="p-6 space-y-4">
-          <div class="flex justify-between items-center">
-            <span class="text-sm text-gray-600">
-              Alertas Enviadas (Este Mes)
-            </span>
-            <span class="font-semibold text-gray-900">47</span>
-          </div>
-          <div class="flex justify-between items-center">
-            <span class="text-sm text-gray-600">Tasa de Respuesta</span>
-            <span class="font-semibold text-green-600">85%</span>
-          </div>
-          <div class="flex justify-between items-center">
-            <span class="text-sm text-gray-600">Clientes Activos</span>
-            <span class="font-semibold text-gray-900">24</span>
-          </div>
-          <div class="flex justify-between items-center">
-            <span class="text-sm text-gray-600">Próximos Vencimientos</span>
-            <span class="font-semibold text-orange-600">8</span>
           </div>
         </div>
       </div>

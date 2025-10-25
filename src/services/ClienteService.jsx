@@ -115,7 +115,7 @@ export const actualizarCliente = async (id, clienteData) => {
 export const eliminarCliente = async (id) => {
   try {
     await axios.delete(`${API_URL}/${id}`, { headers: getAuthHeaders() });
-    toast.info("Cliente eliminado correctamente");
+    //toast.info("Cliente eliminado correctamente");
   } catch (error) {
     const message =
       error.response?.data?.message ||

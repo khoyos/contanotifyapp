@@ -23,7 +23,7 @@ const Sidebar = () => {
     { path: "/home", name: "Inicio", icon: <FaHome /> },
     { path: "/home/clientes", name: "Crear Cliente", icon: <BsPeopleFill /> },
     { path: "/home/crear-obligaciones", name: "Crear Obligaciones", icon: <TbReportMoney /> },
-    { path: "/home/rastreo-obligaciones", name: "Rastreo Obligaciones", icon: <MdFactCheck /> },
+    { path: "/home/monitoreo-obligaciones", name: "Monitoreo Obligaciones", icon: <MdFactCheck /> },
   ];
 
   return (
