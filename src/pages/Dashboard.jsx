@@ -20,6 +20,7 @@ export default function Dashboard() {
 
   const [loading, setLoading] = useState(false);
   const [alertas, setAlertas] = useState([]);
+  //const [alertas, setAlertas] = useState([]);
 
   const dataBarra = [
     { name: "Dian", value: 24 },

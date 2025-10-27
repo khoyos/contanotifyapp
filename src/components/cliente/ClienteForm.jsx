@@ -18,6 +18,7 @@ const ClienteForm = () => {
     telefono: "",
     razonSocial: "",
     notificar: false,
+    usuarioContadorId: localStorage.getItem("userId")
   });
 
   // Si hay ID, cargar cliente existente

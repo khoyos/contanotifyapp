@@ -61,6 +61,7 @@ export const obtenerClientes = async (page = 0, size = 5, filtros = {}) => {
       ...(filtros.razonSocial && { razonSocial: filtros.razonSocial }),
       ...(filtros.documento && { documento: filtros.documento }),
       ...(filtros.email && { email: filtros.email }),
+      ...(localStorage.getItem("userId") && { idContador: localStorage.getItem("userId") }),
     });
 
     const { data } = await axios.get(`${API_URL}?${params.toString()}`, {
