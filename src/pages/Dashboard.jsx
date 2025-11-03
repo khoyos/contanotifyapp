@@ -9,55 +9,84 @@ import {
   AreaChart, Area,
   XAxis, YAxis, Tooltip, CartesianGrid, Legend, ResponsiveContainer
 } from "recharts";
+import DashboardStats from "../components/Dashboard/DashboardStats";
 
 dayjs.locale("es");
 
 
 
-const COLORS = ["#3b82f6", "#ef4444", "#22c55e", "#8b5cf6"];
-
 export default function Dashboard() {
 
-  const [loading, setLoading] = useState(false);
   const [alertas, setAlertas] = useState([]);
+  const [estadisticas, setEstadisticas] = useState([]);
+  const [dataBarra, setDataBarra] = useState([]);
+
   //const [alertas, setAlertas] = useState([]);
 
-  const dataBarra = [
-    { name: "Dian", value: 24 },
-    { name: "Alertas", value: 8 },
-    { name: "Impuestos", value: 156 },
-    { name: "Mes", value: 12 },
-  ];
+  /*const dataBarra = [
+    { name: "Ene", value: 24 },
+    { name: "Feb", value: 8 },
+    { name: "Mar", value: 156 },
+    { name: "Abr", value: 12 },
+    { name: "May", value: 12 },
+    { name: "Jun", value: 35 },
+    { name: "Jul", value: 12 },
+    { name: "Ago", value: 12 },
+    { name: "Sep", value: 90 },
+    { name: "Oct", value: 12 },
+    { name: "Nov", value: 100 },
+    { name: "Dic", value: 12 },
+  ];*/
 
   const dataPastel = [
-    { name: "Por Hacer", value: 24 },
-    { name: "Elaboración", value: 8 },
-    { name: "pendientes por documentos", value: 156 },
-    { name: "Declarado y presentado", value: 12 },
+    { name: "Por Hacer", value: estadisticas.porHacer },
+    { name: "Elaboración", value: estadisticas.elaboracion },
+    { name: "pendientes por docs.", value: estadisticas.pendientePorDocs },
+    { name: "Declarado y presentado", value: estadisticas.declaradoPresentado },
+    { name: "Vencidas", value: estadisticas.vencidas },
   ];
 
   const dataLinea = [
-    { name: "Clientes", value: 24 },
-    { name: "Alertas", value: 8 },
-    { name: "Impuestos", value: 156 },
-    { name: "Mes", value: 12 },
+    { name: "Ene", value: 24 },
+    { name: "Feb", value: 8 },
+    { name: "Mar", value: 156 },
+    { name: "Abr", value: 20 },
+    { name: "May", value: 35 },
+    { name: "Jun", value: 65 },
+    { name: "Jul", value: 85 },
+    { name: "Ago", value: 12 },
+    { name: "Sep", value: 24 },
+    { name: "Oct", value: 45 },
+    { name: "Nov", value: 120 },
+    { name: "Dic", value: 20 }
   ];
 
   const dataArea = [
+    { name: "Ene 2025", progreso: 24 },
+    { name: "Alertas", progreso: 8 },
+    { name: "Impuestos", progreso: 156 },
+    { name: "Mes", progreso: 12 },
     { name: "Clientes", progreso: 24 },
     { name: "Alertas", progreso: 8 },
     { name: "Impuestos", progreso: 156 },
     { name: "Mes", progreso: 12 },
+    { name: "Clientes", progreso: 24 },
+    { name: "Alertas", progreso: 8 },
+    { name: "Impuestos", progreso: 156 },
+    { name: "Mes", progreso: 12 },    
   ];
 
-  const COLORS = ["#3b82f6", "#ef4444", "#22c55e", "#8b5cf6"];
+  const COLORS = ["#3b82f6", "#e3b65b", "#ef4444", "#22c55e", "#ea899a"];
+  const COLORS_OLD = ["#3b82f6", "#ef4444", "#22c55e", "#8b5cf6", "#fff9c4"];
 
   const cargarAlertasCriticas = async () => {
     try {
       const userId = localStorage.getItem("userId");
       const data = await obtenerAlertasCriticas(userId);
-      console.log("response alertas", data.alertas);
+      console.log("response data.corporativoPorEntidad", data.corporativoPorEntidad);
       setAlertas(data.alertas);
+      setEstadisticas(data.estadisticas);
+      setDataBarra(data.corporativoPorEntidad)
     } catch (error) {
       console.error("Error al cargar obligaciones:", error);
     }
@@ -70,10 +99,17 @@ export default function Dashboard() {
 
   return (
     <div className="p-4">
+      {/* --- ESTADÍSTICAS --- */}
+      <div class="bg-white rounded-lg card-shadow">
+        <h2 class="text-2xl font-bold text-gray-900 mb-4">📊 Estadísticas</h2>
+        {/* <!-- estadisticas graficas --> */}
+        <DashboardStats {...estadisticas}/>
 
+      </div>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
         {/* --- GRAFICO DE BARRAS --- */}
-        <div className="bg-white rounded-2xl shadow p-4 h-72">
+       <div className="bg-white rounded-2xl shadow p-4 h-96 flex flex-col items-center justify-center">
+
           <h2 className="text-2xl font-bold text-gray-900 mb-4">
             Comparativo por Entidad
           </h2>
@@ -89,7 +125,7 @@ export default function Dashboard() {
         </div>
 
         {/* --- GRAFICO DE LINEAS --- */}
-        <div className="bg-white rounded-2xl shadow p-4 h-72">
+        <div className="bg-white rounded-2xl shadow p-4 h-96 flex flex-col items-center justify-center">
           <h2 className="text-2xl font-bold text-gray-900 mb-4">
             Tendencia de rentas x mes
           </h2>
@@ -106,7 +142,7 @@ export default function Dashboard() {
         </div>
 
         {/* --- GRAFICO DE PASTEL --- */}
-        <div className="bg-white rounded-2xl shadow p-4 h-72 flex flex-col items-center justify-center">
+        <div className="bg-white rounded-2xl shadow p-4 h-96 flex flex-col items-center justify-center">
           <h2 className="text-2xl font-bold text-gray-900 mb-4">
             Distribución de Estados
           </h2>
@@ -131,7 +167,7 @@ export default function Dashboard() {
         </div>
 
         {/* --- GRAFICO DE AREA --- */}
-        <div className="bg-white rounded-2xl shadow p-4 h-72">
+       <div className="bg-white rounded-2xl shadow p-4 h-96 flex flex-col items-center justify-center">
           <h2 className="text-2xl font-bold text-gray-900 mb-4">
             Crecimiento progresivo Anual
           </h2>
@@ -162,7 +198,7 @@ export default function Dashboard() {
       <div className="p-4">
         <div className="mb-8">
           <h2 className="text-2xl font-bold text-gray-900 mb-4">
-            📊 ¡¡¡ Alertas Críticas !!!!
+            📊  Alertas Críticas
           </h2>
 
           {/* Urgentes */}
@@ -297,76 +333,59 @@ export default function Dashboard() {
             </div>
           </div>
 
+   {/* Vencidas */}
+          <div className="mb-6">
+            <h3 className="text-lg font-semibold text-blue-600 mb-2">Vencidas</h3>
+            <div className="w-full overflow-x-auto">
+              {alertas.filter((a) => a.vencida).length === 0 ? (
+                <p className="text-gray-500 italic text-sm px-2">
+                  No hay Declaraciones Vencidas.
+                </p>
+              ) : (
+                <div className="flex space-x-4 min-w-full">
+                  {alertas
+                    .filter((a) => a.vencida)
+                    .map((alerta, index) => (
+                      <div
+                        key={index}
+                        className="bg-yellow-50 border-l-4 border-blue-500 p-4 rounded-lg flex-shrink-0 w-72 shadow-sm"
+                      >
+                        <div className="flex items-center justify-between mb-2">
+                          <h3 className="font-semibold text-yellow-800 text-sm">
+                            { alerta.mensaje } - {" Desde el: "}
+                            {dayjs(alerta.fechaVencimiento).format(
+                              "DD [de] MMMM [de] YYYY"
+                            )}
+                          </h3>
+                          <span className="bg-blue-500 text-white px-2 py-1 rounded-full text-xs">
+                            VENCIDA
+                          </span>
+                        </div>
+                        <p className="text-blue-700 font-medium">
+                          {alerta.nombreCliente}
+                        </p>
+                        <p className="text-blue-600 text-sm">
+                          {alerta.obligacionRenta}
+                        </p>
+                        <p className="text-blue-600 text-sm">
+                          {alerta.obligacionPago}
+                        </p>
+                      </div>
+                    ))}
+                </div>
+              )}
+            </div>
+          </div>
+
         </div>
       </div>
 
 
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
-
+    
       </div>
-      {/* --- ESTADÍSTICAS --- */}
-      <div class="bg-white rounded-lg card-shadow">
-        <h2 class="text-2xl font-bold text-gray-900 mb-4">📊 Estadísticas</h2>
-        {/* <!-- estadisticas graficas --> */}
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-          <div class="bg-white p-6 rounded-lg card-shadow">
-            <div class="flex items-center">
-              <div class="bg-blue-100 p-3 rounded-full">
-                <svg class="w-6 h-6 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
-                  <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-              </div>
-              <div class="ml-4">
-                <p class="text-2xl font-bold text-gray-900">24</p>
-                <p class="text-gray-600 text-sm">Clientes Activos</p>
-              </div>
-            </div>
-          </div>
 
-          <div class="bg-white p-6 rounded-lg card-shadow">
-            <div class="flex items-center">
-              <div class="bg-red-100 p-3 rounded-full">
-                <svg class="w-6 h-6 text-red-600" fill="currentColor" viewBox="0 0 20 20">
-                  <path d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 6.75h.007v.008H12V6.75z" />
-                </svg>
-              </div>
-              <div class="ml-4">
-                <p class="text-2xl font-bold text-gray-900">8</p>
-                <p class="text-gray-600 text-sm">Alertas Pendientes</p>
-              </div>
-            </div>
-          </div>
-
-          <div class="bg-white p-6 rounded-lg card-shadow">
-            <div class="flex items-center">
-              <div class="bg-green-100 p-3 rounded-full">
-                <svg class="w-6 h-6 text-green-600" fill="currentColor" viewBox="0 0 20 20">
-                  <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-              </div>
-              <div class="ml-4">
-                <p class="text-2xl font-bold text-gray-900">156</p>
-                <p class="text-gray-600 text-sm">Impuestos al Día</p>
-              </div>
-            </div>
-          </div>
-
-          <div class="bg-white p-6 rounded-lg card-shadow">
-            <div class="flex items-center">
-              <div class="bg-purple-100 p-3 rounded-full">
-                <svg class="w-6 h-6 text-purple-600" fill="currentColor" viewBox="0 0 20 20">
-                  <path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z" />
-                </svg>
-              </div>
-              <div class="ml-4">
-                <p class="text-2xl font-bold text-gray-900">12</p>
-                <p class="text-gray-600 text-sm">Este Mes</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
   );
 }

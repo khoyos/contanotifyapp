@@ -243,7 +243,7 @@ const ConfiguracionObligaciones = () => {
   const cargarConfiguracionObligaciones = async (pagina = 0, filtrosActuales = filtros) => {
     try {
       setLoading(true);
-      const data = await obtenerConfiguracionObligaciones(pagina, 10, filtrosActuales);
+      const data = await obtenerConfiguracionObligaciones(pagina, 5, filtrosActuales);
       setConfiguracionObligacionesList(data.content || []);
       setTotalPages(data.totalPages || 1);
       setPage(pagina);

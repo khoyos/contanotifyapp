@@ -90,6 +90,7 @@ export const obtenerConfiguracionObligaciones = async (page = 0, size = 5, filtr
         ...(filtros.renta && { renta: filtros.renta }),
         ...(filtros.pago && { pago: filtros.pago }),
         ...(filtros.fecha && { fecha: filtros.fecha }),
+        ...(filtros.estado && { estado: filtros.estado }),
      });
     
     const { data } = await axios.get(`${API_URL}/obligacioncliente/obligaciones?${params.toString()}`, {

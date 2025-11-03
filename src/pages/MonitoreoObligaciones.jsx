@@ -25,9 +25,9 @@ const MonitoreoObligaciones = () => {
     async (pagina = 0, filtrosActuales = filtros) => {
       try {
         setLoading(true);
-        const data = await obtenerConfiguracionObligaciones(pagina, 10, filtrosActuales);
+        const data = await obtenerConfiguracionObligaciones(pagina, 5, filtrosActuales);
 
-        //console.log("📦 Data obligaciones:", data.content);
+        //console.log("Data obligaciones:", data.content);
 
         setObligacionesClientes(data.content || []);
         setTotalPages(data.totalPages || 1);
