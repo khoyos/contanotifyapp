@@ -78,7 +78,7 @@ export const guardarConfiguracionObligaciones = async (data) => {
 
 
 // Obtener lista paginada
-export const obtenerConfiguracionObligaciones = async (page = 0, size = 5, filtros = {}) => {
+export const obtenerConfiguracionObligaciones = async (page = 0, size = 10, filtros = {}) => {
   try {
 
     const params = new URLSearchParams({
@@ -91,8 +91,10 @@ export const obtenerConfiguracionObligaciones = async (page = 0, size = 5, filtr
         ...(filtros.pago && { pago: filtros.pago }),
         ...(filtros.fecha && { fecha: filtros.fecha }),
         ...(filtros.estado && { estado: filtros.estado }),
+        ...(localStorage.getItem("userId") && { idContador: localStorage.getItem("userId") }),
      });
-    
+    console.log("params ok", params);
+
     const { data } = await axios.get(`${API_URL}/obligacioncliente/obligaciones?${params.toString()}`, {
       headers: getAuthHeaders(),
     });

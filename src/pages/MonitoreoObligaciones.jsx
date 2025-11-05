@@ -13,6 +13,7 @@ const MonitoreoObligaciones = () => {
   const [filtros, setFiltros] = useState({
     identidadCliente: "",
     nombre: "",
+    entidad: "",
     renta: "",
     pago: "",
     periodo: "",
@@ -25,7 +26,7 @@ const MonitoreoObligaciones = () => {
     async (pagina = 0, filtrosActuales = filtros) => {
       try {
         setLoading(true);
-        const data = await obtenerConfiguracionObligaciones(pagina, 5, filtrosActuales);
+        const data = await obtenerConfiguracionObligaciones(pagina, 10, filtrosActuales);
 
         //console.log("Data obligaciones:", data.content);
 
@@ -42,7 +43,7 @@ const MonitoreoObligaciones = () => {
     [filtros]
   );
 
-  // 🔹 Buscar manualmente con filtros
+  // Buscar manualmente con filtros
   const handleBuscar = (e) => {
     e.preventDefault();
     loadObligaciones(0, filtros);
@@ -53,7 +54,7 @@ const MonitoreoObligaciones = () => {
     setFiltros((prev) => ({ ...prev, [name]: value }));
   };
 
-  // 🔹 Navegación entre páginas
+  // Navegación entre páginas
   const handlePrev = () => {
     if (page > 0) loadObligaciones(page - 1, filtros);
   };
@@ -62,7 +63,7 @@ const MonitoreoObligaciones = () => {
     if (page < totalPages - 1) loadObligaciones(page + 1, filtros);
   };
 
-  // 🔹 Guardar estado actualizado
+  // Guardar estado actualizado
   const handleSave = async (id, estado, observacion) => {
     if (!estado || estado === "Seleccionar") {
       toast.warn("Seleccione un estado antes de guardar");
@@ -80,7 +81,7 @@ const MonitoreoObligaciones = () => {
     }
   };
 
-  // 🔹 Carga inicial
+  // Carga inicial
   useEffect(() => {
     loadObligaciones(0, filtros);
   }, []);
@@ -92,7 +93,7 @@ const MonitoreoObligaciones = () => {
           Monitoreo de Obligaciones
         </h1>
 
-        {/* 🔍 Filtros de búsqueda */}
+        {/* Filtros de búsqueda */}
         <form
           onSubmit={handleBuscar}
           className="grid grid-cols-1 md:grid-cols-4 gap-3 mb-6"
@@ -112,6 +113,15 @@ const MonitoreoObligaciones = () => {
             value={filtros.nombre}
             onChange={handleChange}
             placeholder="Buscar por Nombre"
+            className="border rounded-md p-2 flex-1 min-w-[130px]"
+          />
+
+                    <input
+            type="text"
+            name="entidad"
+            value={filtros.entidad}
+            onChange={handleChange}
+            placeholder="Buscar por Entidad"
             className="border rounded-md p-2 flex-1 min-w-[130px]"
           />
 
@@ -163,7 +173,7 @@ const MonitoreoObligaciones = () => {
           </button>
         </form>
 
-        {/* 📊 Tabla de obligaciones */}
+        {/* Tabla de obligaciones */}
         <TableMonitoreoObligaciones
           obligacionesClientes={obligacionesClientes}
           loading={loading}

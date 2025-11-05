@@ -20,22 +20,24 @@ export default function Dashboard() {
   const [alertas, setAlertas] = useState([]);
   const [estadisticas, setEstadisticas] = useState([]);
   const [dataBarra, setDataBarra] = useState([]);
+  const [dataLinea, setDataLinea] = useState([]);
+  const [dataArea, setDataArea] = useState([]);
 
   //const [alertas, setAlertas] = useState([]);
 
   /*const dataBarra = [
-    { name: "Ene", value: 24 },
-    { name: "Feb", value: 8 },
-    { name: "Mar", value: 156 },
-    { name: "Abr", value: 12 },
-    { name: "May", value: 12 },
-    { name: "Jun", value: 35 },
-    { name: "Jul", value: 12 },
-    { name: "Ago", value: 12 },
-    { name: "Sep", value: 90 },
-    { name: "Oct", value: 12 },
-    { name: "Nov", value: 100 },
-    { name: "Dic", value: 12 },
+    { name: "Ene", DIAN: 24, Alcaldia: 24 },
+    { name: "Feb", DIAN: 8, Alcaldia: 8 },
+    { name: "Mar", DIAN: 156, Alcaldia: 156 },
+    { name: "Abr", DIAN: 12, Alcaldia: 12 },
+    { name: "May", DIAN: 12, Alcaldia: 12 },
+    { name: "Jun", DIAN: 35, Alcaldia: 35 },
+    { name: "Jul", DIAN: 12, Alcaldia: 12 },
+    { name: "Ago", DIAN: 12, Alcaldia: 12 },
+    { name: "Sep", DIAN: 90, Alcaldia: 24 },
+    { name: "Oct", DIAN: 12, Alcaldia: 24 },
+    { name: "Nov", DIAN: 100, Alcaldia: 24 },
+    { name: "Dic", DIAN: 12, Alcaldia: 24 },
   ];*/
 
   const dataPastel = [
@@ -46,7 +48,7 @@ export default function Dashboard() {
     { name: "Vencidas", value: estadisticas.vencidas },
   ];
 
-  const dataLinea = [
+  /*/const dataLinea = [
     { name: "Ene", value: 24 },
     { name: "Feb", value: 8 },
     { name: "Mar", value: 156 },
@@ -59,9 +61,9 @@ export default function Dashboard() {
     { name: "Oct", value: 45 },
     { name: "Nov", value: 120 },
     { name: "Dic", value: 20 }
-  ];
+  ];*/
 
-  const dataArea = [
+  /*const dataArea = [
     { name: "Ene 2025", progreso: 24 },
     { name: "Alertas", progreso: 8 },
     { name: "Impuestos", progreso: 156 },
@@ -73,23 +75,54 @@ export default function Dashboard() {
     { name: "Clientes", progreso: 24 },
     { name: "Alertas", progreso: 8 },
     { name: "Impuestos", progreso: 156 },
-    { name: "Mes", progreso: 12 },    
-  ];
+    { name: "Mes", progreso: 12 },
+  ];*/
 
   const COLORS = ["#3b82f6", "#e3b65b", "#ef4444", "#22c55e", "#ea899a"];
-  const COLORS_OLD = ["#3b82f6", "#ef4444", "#22c55e", "#8b5cf6", "#fff9c4"];
+  //const COLORS_OLD = ["#3b82f6", "#ef4444", "#22c55e", "#8b5cf6", "#fff9c4"];
 
   const cargarAlertasCriticas = async () => {
     try {
       const userId = localStorage.getItem("userId");
       const data = await obtenerAlertasCriticas(userId);
-      console.log("response data.corporativoPorEntidad", data.corporativoPorEntidad);
+      console.log("response data.rentasPorAnios", data.rentasPorAnios);
       setAlertas(data.alertas);
       setEstadisticas(data.estadisticas);
-      setDataBarra(data.corporativoPorEntidad)
+      setDataLinea(data.clientesConRentaPorMes);
+      
+      const dataTransformada = transformarDataCorporativo(data.corporativoPorEntidad);
+      setDataBarra(dataTransformada);
+      setDataArea(data.rentasPorAnios);
+      //setDataBarra(data.corporativoPorEntidad)
     } catch (error) {
       console.error("Error al cargar obligaciones:", error);
     }
+  };
+
+  const transformarDataCorporativo = (dataA) => {
+    if (!dataA || dataA.length === 0) return [];
+
+    // Agrupar por mes y tipo
+    const agrupado = Object.values(
+      dataA.reduce((acc, { name, value, type }) => {
+        if (!acc[name]) acc[name] = { name };
+        if (type) acc[name][type] = value;
+        return acc;
+      }, {})
+    );
+
+    // Detectar todas las entidades (DIAN, Alcaldía, etc.)
+    const entidades = [...new Set(dataA.map((d) => d.type).filter(Boolean))];
+
+    // Completar con 0 donde falten valores
+    const dataCompleta = agrupado.map((item) => {
+      entidades.forEach((entidad) => {
+        if (item[entidad] === undefined) item[entidad] = 0;
+      });
+      return item;
+    });
+
+    return dataCompleta;
   };
 
   useEffect(() => {
@@ -103,12 +136,12 @@ export default function Dashboard() {
       <div class="bg-white rounded-lg card-shadow">
         <h2 class="text-2xl font-bold text-gray-900 mb-4">📊 Estadísticas</h2>
         {/* <!-- estadisticas graficas --> */}
-        <DashboardStats {...estadisticas}/>
+        <DashboardStats {...estadisticas} />
 
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
         {/* --- GRAFICO DE BARRAS --- */}
-       <div className="bg-white rounded-2xl shadow p-4 h-96 flex flex-col items-center justify-center">
+        <div className="bg-white rounded-2xl shadow p-4 h-96 flex flex-col items-center justify-center">
 
           <h2 className="text-2xl font-bold text-gray-900 mb-4">
             Comparativo por Entidad
@@ -119,7 +152,16 @@ export default function Dashboard() {
               <XAxis dataKey="name" />
               <YAxis />
               <Tooltip />
-              <Bar dataKey="value" fill="#3b82f6" radius={[8, 8, 0, 0]} />
+              {Object.keys(dataBarra[0] || {})
+                .filter((key) => key !== "name")
+                .map((entidad, i) => (
+                  <Bar
+                    key={entidad}
+                    dataKey={entidad}
+                    fill={["#3b82f6", "#22c55e", "#ef4444", "#8b5cf6"][i % 4]}
+                    radius={[8, 8, 0, 0]}
+                  />
+                ))}
             </BarChart>
           </ResponsiveContainer>
         </div>
@@ -136,7 +178,7 @@ export default function Dashboard() {
               <YAxis />
               <Tooltip />
               <Legend />
-              <Line type="monotone" dataKey="value" stroke="#10b981" strokeWidth={3} dot={{ r: 5 }} />
+              <Line type="monotone" dataKey="clientes" stroke="#3b82f6" strokeWidth={3} dot={{ r: 5 }} />
             </LineChart>
           </ResponsiveContainer>
         </div>
@@ -167,7 +209,7 @@ export default function Dashboard() {
         </div>
 
         {/* --- GRAFICO DE AREA --- */}
-       <div className="bg-white rounded-2xl shadow p-4 h-96 flex flex-col items-center justify-center">
+        <div className="bg-white rounded-2xl shadow p-4 h-96 flex flex-col items-center justify-center">
           <h2 className="text-2xl font-bold text-gray-900 mb-4">
             Crecimiento progresivo Anual
           </h2>
@@ -175,17 +217,18 @@ export default function Dashboard() {
             <AreaChart data={dataArea}>
               <defs>
                 <linearGradient id="colorProgreso" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#8b5cf6" stopOpacity={0.8} />
-                  <stop offset="95%" stopColor="#8b5cf6" stopOpacity={0} />
+                  <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.8} />
+                  <stop offset="95%" stopColor="#3b82f6" stopOpacity={0} />
                 </linearGradient>
               </defs>
-              <XAxis dataKey="name" />
+              <XAxis dataKey="anio" />
               <YAxis />
               <Tooltip />
               <Area
                 type="monotone"
-                dataKey="progreso"
-                stroke="#8b5cf6"
+                dataKey="rentas"
+                stroke="#3b82f6"
+                strokeWidth={3} dot={{ r: 5 }}
                 fillOpacity={1}
                 fill="url(#colorProgreso)"
               />
@@ -220,7 +263,7 @@ export default function Dashboard() {
                       >
                         <div className="flex items-center justify-between mb-2">
                           <h3 className="font-semibold text-red-800 text-sm">
-                            { alerta.mensaje || " " } - {" "}
+                            {alerta.mensaje || " "} - {" "}
                             {dayjs(alerta.fechaVencimiento).format(
                               "DD [de] MMMM [de] YYYY"
                             )}
@@ -333,7 +376,7 @@ export default function Dashboard() {
             </div>
           </div>
 
-   {/* Vencidas */}
+          {/* Vencidas */}
           <div className="mb-6">
             <h3 className="text-lg font-semibold text-blue-600 mb-2">Vencidas</h3>
             <div className="w-full overflow-x-auto">
@@ -352,7 +395,7 @@ export default function Dashboard() {
                       >
                         <div className="flex items-center justify-between mb-2">
                           <h3 className="font-semibold text-yellow-800 text-sm">
-                            { alerta.mensaje } - {" Desde el: "}
+                            {alerta.mensaje} - {" Desde el: "}
                             {dayjs(alerta.fechaVencimiento).format(
                               "DD [de] MMMM [de] YYYY"
                             )}
@@ -383,7 +426,7 @@ export default function Dashboard() {
 
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
-    
+
       </div>
 
     </div>

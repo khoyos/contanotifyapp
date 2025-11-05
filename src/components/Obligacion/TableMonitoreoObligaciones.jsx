@@ -95,6 +95,7 @@ const TableMonitoreoObligaciones = ({
               {[
                 "Identificación",
                 "Cliente",
+                "Entidad",
                 "Tipo de Declaración",
                 "Pago",
                 "Periodo",
@@ -139,6 +140,7 @@ const TableMonitoreoObligaciones = ({
                   >
                     <td className="p-3 border-b border-gray-200">{o.identidadCliente}</td>
                     <td className="p-3 border-b border-gray-200">{o.nombreCliente}</td>
+                    <td className="p-3 border-b border-gray-200">{o.entidad}</td>
                     <td className="p-3 border-b border-gray-200">{o.renta}</td>
                     <td className="p-3 border-b border-gray-200">{o.pago}</td>
                     <td className="p-3 border-b border-gray-200">{o.periodo}</td>
