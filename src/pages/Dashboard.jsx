@@ -85,7 +85,7 @@ export default function Dashboard() {
     try {
       const userId = localStorage.getItem("userId");
       const data = await obtenerAlertasCriticas(userId);
-      console.log("response data.rentasPorAnios", data.rentasPorAnios);
+      console.log("response data.alertas", data.alertas);
       setAlertas(data.alertas);
       setEstadisticas(data.estadisticas);
       setDataLinea(data.clientesConRentaPorMes);
@@ -307,7 +307,7 @@ export default function Dashboard() {
                       >
                         <div className="flex items-center justify-between mb-2">
                           <h3 className="font-semibold text-orange-800 text-sm">
-                            Vence en 3 días -{" "}
+                            Tu renta vence el -{" "}
                             {dayjs(alerta.fechaVencimiento).format(
                               "DD [de] MMMM [de] YYYY"
                             )}
@@ -351,7 +351,7 @@ export default function Dashboard() {
                       >
                         <div className="flex items-center justify-between mb-2">
                           <h3 className="font-semibold text-yellow-800 text-sm">
-                            Vence en 5 días -{" "}
+                            Tu renta vence el -{" "}
                             {dayjs(alerta.fechaVencimiento).format(
                               "DD [de] MMMM [de] YYYY"
                             )}
