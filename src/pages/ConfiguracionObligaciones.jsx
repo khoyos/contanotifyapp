@@ -287,7 +287,7 @@ const ConfiguracionObligaciones = () => {
           </h2>
           <button
             onClick={handleGuardarTodo}
-            className="flex items-center justify-center gap-2 px-4 sm:px-5 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition w-full sm:w-auto"
+            className="flex items-center justify-center gap-2 px-4 sm:px-5 py-2 bg-[#3b82f6] hover:bg-blue-700 text-white rounded-lg transition w-full sm:w-auto"
           >
             <Save size={18} /> Guardar
           </button>
@@ -308,7 +308,7 @@ const ConfiguracionObligaciones = () => {
               name="tipoDocumento"
               value={formConfig.tipoDocumento}
               onChange={handleChangeConfig}
-              className="border rounded-md p-2 w-full"
+              className="focus:ring-2 focus:ring-blue-300 outline-none border rounded-md p-2 w-full"
             >
               <option value="">Seleccione...</option>
               <option value="NIT">NIT</option>
@@ -325,7 +325,7 @@ const ConfiguracionObligaciones = () => {
                 value={formConfig.documento}
                 onChange={handleChangeConfig}
                 onKeyDown={handleKeyPress}
-                className="border rounded-md p-2 w-full"
+                className="focus:ring-2 focus:ring-blue-300 outline-none border rounded-md p-2 w-full"
                 placeholder="Ingrese documento"
               />
               <Search
@@ -359,7 +359,7 @@ const ConfiguracionObligaciones = () => {
               name="entidad"
               value={selectedEntidad}
               onChange={handleEntidadChange}
-              className="border rounded-md p-2 w-full"
+              className="focus:ring-2 focus:ring-blue-300 outline-none border rounded-md p-2 w-full"
             >
               <option value="">Seleccione...</option>
               {entidadesList.map((entidad, idx) => (
@@ -379,7 +379,7 @@ const ConfiguracionObligaciones = () => {
               name="renta"
               value={selectedRenta}
               onChange={handleRentaChange}
-              className="border rounded-md p-2 w-full"
+              className="border rounded-md p-2 w-full focus:ring-2 focus:ring-blue-300 outline-none border rounded-md p-2 w-full"
             >
               <option value="">Seleccione...</option>
               {obligacionesList.map((obligacion, idx) => (
@@ -445,7 +445,7 @@ const ConfiguracionObligaciones = () => {
                   value={filtros.identidadCliente}
                   onChange={handleChange}
                   placeholder="Buscar por Identidad"
-                  className="border rounded-md p-2 flex-1 min-w-[130px]"
+                  className="border rounded-md p-2 w-full focus:ring-2 focus:ring-blue-300 outline-none flex-1 min-w-[130px]"
                 />
 
                 <input
@@ -454,7 +454,7 @@ const ConfiguracionObligaciones = () => {
                   value={filtros.nombre}
                   onChange={handleChange}
                   placeholder="Buscar por Nombre"
-                  className="border rounded-md p-2 flex-1 min-w-[130px]"
+                  className="border rounded-md p-2 w-full focus:ring-2 focus:ring-blue-300 outline-none flex-1 min-w-[130px]"
                 />
 
                 <input
@@ -463,7 +463,7 @@ const ConfiguracionObligaciones = () => {
                   value={filtros.entidad}
                   onChange={handleChange}
                   placeholder="Buscar por Entidad"
-                  className="border rounded-md p-2 flex-1 min-w-[130px]"
+                  className="border rounded-md p-2 w-full focus:ring-2 focus:ring-blue-300 outline-none flex-1 min-w-[130px]"
                 />
 
                 <input
@@ -472,7 +472,7 @@ const ConfiguracionObligaciones = () => {
                   value={filtros.renta}
                   onChange={handleChange}
                   placeholder="Buscar por Renta"
-                  className="border rounded-md p-2 flex-1 min-w-[130px]"
+                  className="border rounded-md p-2 w-full focus:ring-2 focus:ring-blue-300 outline-none flex-1 min-w-[130px]"
                 />
 
                 <input
@@ -481,7 +481,7 @@ const ConfiguracionObligaciones = () => {
                   value={filtros.pago}
                   onChange={handleChange}
                   placeholder="Buscar por Pago"
-                  className="border rounded-md p-2 flex-1 min-w-[130px]"
+                  className="border rounded-md p-2 w-full focus:ring-2 focus:ring-blue-300 outline-none flex-1 min-w-[130px]"
                 />
 
                 <input
@@ -490,9 +490,9 @@ const ConfiguracionObligaciones = () => {
                   value={filtros.fecha}
                   onChange={handleChange}
                   placeholder="Fecha (YYYY-MM-DD)"
-                  className="border rounded-md p-2 flex-1 min-w-[180px]"
+                  className="border rounded-md p-2 w-full focus:ring-2 focus:ring-blue-300 outline-none flex-1 min-w-[180px]"
                 />
-                <button className="flex items-center justify-center gap-2 bg-green-600 hover:bg-green-700 text-white rounded-md p-2 transition">
+                <button className="flex items-center justify-center gap-2 bg-[#3b82f6] hover:bg-blue-700 text-white rounded-md p-2 transition">
                   <Search size={18} /> Buscar
                 </button>
               </div>

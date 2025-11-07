@@ -16,10 +16,10 @@ const TableObligaciones = ({
 }) => {
   return (
     <div>
-      <div className="overflow-x-auto">
+      <div className="overflow-x-auto overflow-x-auto shadow-md rounded-lg bg-white">
         <table className="w-full border-collapse">
           <thead>
-            <tr className="bg-blue-50 text-left">
+            <tr className="bg-[#1e1e58] text-left text-white">
               <th className="p-3 border-b">Identidad</th>
               <th className="p-3 border-b">Nombre</th>
               <th className="p-3 border-b">Entidad</th>

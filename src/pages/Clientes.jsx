@@ -97,7 +97,7 @@ const Clientes = () => {
           <h2 className="text-2xl font-semibold text-gray-800">Clientes</h2>
           <button
             onClick={() => navigate("/home/crear-cliente")}
-            className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition"
+            className="bg-[#3b82f6] text-white px-4 py-2 rounded-md hover:bg-blue-700 transition"
           >
             + Nuevo Cliente
           </button>
@@ -134,7 +134,7 @@ const Clientes = () => {
           />
           <button
             type="submit"
-            className="flex items-center justify-center gap-2 bg-green-600 hover:bg-green-700 text-white rounded-md p-2 transition"
+            className="flex items-center justify-center gap-2 bg-[#3b82f6] hover:bg-blue-700 text-white rounded-md p-2 transition"
           >
             <Search size={18} /> Buscar
           </button>

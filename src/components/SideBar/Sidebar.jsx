@@ -32,7 +32,7 @@ const Sidebar = () => {
       {isMobile && (
         <button
           onClick={toggleSidebar}
-          className="fixed top-4 left-4 z-50 bg-green-600 text-white p-2 rounded-md shadow-md hover:bg-green-700 transition"
+          className="fixed top-4 left-4 z-50 bg-[#3b82f6] text-white p-2 rounded-md shadow-md hover:bg-[#3b82f6] transition"
         >
           <FaBars size={20} />
         </button>
@@ -40,19 +40,19 @@ const Sidebar = () => {
 
       {/* Sidebar */}
       <div
-        className={`fixed top-0 left-0 h-full bg-slate-900 text-white transition-all duration-300 z-40
+        className={`fixed top-0 left-0 h-full bg-[#1e1e58] text-white transition-all duration-300 z-40
         ${isMobile ? (isOpen ? "w-64" : "w-0") : isOpen ? "w-64" : "w-20"}
         overflow-hidden shadow-lg`}
       >
         {/* Header */}
-        <div className="flex items-center justify-between px-4 py-4 border-b border-slate-700">
+        <div className="flex items-center justify-between px-4 py-4 border-b border-[#1e1e58]">
           <h1 className="text-lg font-bold">
             {isOpen ? "Conta Notify" : "C"}
           </h1>
           {!isMobile && (
             <button
               onClick={toggleSidebar}
-              className="text-white hover:text-green-400 transition"
+              className="text-white hover:text-[#3b82f6] transition"
             >
               <FaBars />
             </button>
@@ -68,8 +68,8 @@ const Sidebar = () => {
               end
               className={({ isActive }) =>
                 `flex items-center gap-3 px-4 py-2 rounded-lg transition-all 
-                hover:bg-green-700 ${
-                  isActive ? "bg-green-700 font-semibold" : "text-gray-300"
+                hover:bg-[#3b82f6] ${
+                  isActive ? "bg-[#3b82f6] font-semibold" : "text-gray-300"
                 }`
               }
               onClick={() => isMobile && setIsOpen(false)} // cerrar en móvil

@@ -134,7 +134,7 @@ export default function Dashboard() {
     <div className="p-4">
       {/* --- ESTADÍSTICAS --- */}
       <div class="bg-white rounded-lg card-shadow">
-        <h2 class="text-2xl font-bold text-gray-900 mb-4">📊 Estadísticas</h2>
+        <h2 class="text-2xl font-bold text-[#1e1e58] mb-4">📊 Estadísticas</h2>
         {/* <!-- estadisticas graficas --> */}
         <DashboardStats {...estadisticas} />
 
@@ -143,7 +143,7 @@ export default function Dashboard() {
         {/* --- GRAFICO DE BARRAS --- */}
         <div className="bg-white rounded-2xl shadow p-4 h-96 flex flex-col items-center justify-center">
 
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">
+          <h2 className="text-2xl font-bold text-[#1e1e58] mb-4">
             Comparativo por Entidad
           </h2>
           <ResponsiveContainer width="100%" height="100%">
@@ -168,7 +168,7 @@ export default function Dashboard() {
 
         {/* --- GRAFICO DE LINEAS --- */}
         <div className="bg-white rounded-2xl shadow p-4 h-96 flex flex-col items-center justify-center">
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">
+          <h2 className="text-2xl font-bold text-[#1e1e58] mb-4">
             Tendencia de rentas x mes
           </h2>
           <ResponsiveContainer width="100%" height="100%">
@@ -185,7 +185,7 @@ export default function Dashboard() {
 
         {/* --- GRAFICO DE PASTEL --- */}
         <div className="bg-white rounded-2xl shadow p-4 h-96 flex flex-col items-center justify-center">
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">
+          <h2 className="text-2xl font-bold text-[#1e1e58] mb-4">
             Distribución de Estados
           </h2>
           <ResponsiveContainer width="100%" height="100%">
@@ -210,7 +210,7 @@ export default function Dashboard() {
 
         {/* --- GRAFICO DE AREA --- */}
         <div className="bg-white rounded-2xl shadow p-4 h-96 flex flex-col items-center justify-center">
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">
+          <h2 className="text-2xl font-bold text-[#1e1e58] mb-4">
             Crecimiento progresivo Anual
           </h2>
           <ResponsiveContainer width="100%" height="100%">
@@ -240,7 +240,7 @@ export default function Dashboard() {
       {/* --- ALERTAS CRÍTICAS --- */}
       <div className="p-4">
         <div className="mb-8">
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">
+          <h2 className="text-2xl font-bold text-[#1e1e58] mb-4">
             📊  Alertas Críticas
           </h2>
 

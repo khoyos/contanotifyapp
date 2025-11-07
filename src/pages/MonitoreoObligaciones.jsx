@@ -104,7 +104,7 @@ const MonitoreoObligaciones = () => {
             value={filtros.identidadCliente}
             onChange={handleChange}
             placeholder="Buscar por Identidad"
-            className="border rounded-md p-2 flex-1 min-w-[130px]"
+            className="border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-400 min-w-[130px]"
           />
 
           <input
@@ -113,7 +113,7 @@ const MonitoreoObligaciones = () => {
             value={filtros.nombre}
             onChange={handleChange}
             placeholder="Buscar por Nombre"
-            className="border rounded-md p-2 flex-1 min-w-[130px]"
+            className="border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-400 min-w-[130px]"
           />
 
                     <input
@@ -122,7 +122,7 @@ const MonitoreoObligaciones = () => {
             value={filtros.entidad}
             onChange={handleChange}
             placeholder="Buscar por Entidad"
-            className="border rounded-md p-2 flex-1 min-w-[130px]"
+            className="border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-400 min-w-[130px]"
           />
 
           <input
@@ -131,7 +131,7 @@ const MonitoreoObligaciones = () => {
             value={filtros.renta}
             onChange={handleChange}
             placeholder="Buscar por Renta"
-            className="border rounded-md p-2 flex-1 min-w-[130px]"
+            className="border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-400 min-w-[130px]"
           />
 
           <input
@@ -140,7 +140,7 @@ const MonitoreoObligaciones = () => {
             value={filtros.pago}
             onChange={handleChange}
             placeholder="Buscar por Pago"
-            className="border rounded-md p-2 flex-1 min-w-[130px]"
+            className="border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-400 min-w-[130px]"
           />
 
           <input
@@ -149,7 +149,7 @@ const MonitoreoObligaciones = () => {
             value={filtros.fecha}
             onChange={handleChange}
             placeholder="Fecha (YYYY-MM-DD)"
-            className="border rounded-md p-2 flex-1 min-w-[180px]"
+            className="border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-400 min-w-[180px]"
           />
 
           <select
@@ -167,7 +167,7 @@ const MonitoreoObligaciones = () => {
 
           <button
             type="submit"
-            className="flex items-center justify-center gap-2 bg-green-600 hover:bg-green-700 text-white rounded-md p-2 transition"
+            className="flex items-center justify-center gap-2 bg-[#3b82f6] hover:bg-blue-700 text-white rounded-md p-2 transition"
           >
             <Search size={18} /> Buscar
           </button>

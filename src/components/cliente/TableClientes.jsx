@@ -18,7 +18,7 @@ const TableClientes = ({
       {/* Tabla */}
       <div className="overflow-x-auto shadow-md rounded-lg bg-white">
         <table className="min-w-full text-sm text-gray-700 border-collapse">
-          <thead className="bg-gradient-to-r from-blue-50 to-blue-100 text-gray-700 uppercase text-xs font-semibold">
+          <thead className="bg-[#1e1e58] text-white uppercase text-xs font-semibold">
             <tr>
               <th className="p-3 text-left border-b">Nombre</th>
               <th className="p-3 text-left border-b">Razón Social</th>

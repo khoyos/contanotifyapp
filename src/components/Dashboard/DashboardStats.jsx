@@ -22,7 +22,7 @@ const StatCard = ({ icon: Icon, color, bgColor, label, value }) => (
       <Icon className={`w-6 h-6 ${color}`} />
     </div>
     <div>
-      <p className="text-2xl font-bold text-gray-900"><CountUp end={value} duration={2} /></p>
+      <p className="text-2xl font-bold text-[#1e1e58]"><CountUp end={value} duration={2} /></p>
       <p className="text-gray-500 text-sm">{label}</p>
     </div>
   </motion.div>

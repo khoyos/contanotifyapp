@@ -87,10 +87,10 @@ const TableMonitoreoObligaciones = ({
   };
 
   return (
-    <div className="relative border border-gray-200 rounded-xl bg-white shadow-sm">
-      <div className="overflow-x-auto">
-        <table className="min-w-full text-left border-collapse">
-          <thead className="bg-blue-50 text-gray-700 font-semibold sticky top-0 z-10">
+    <div className="relative w-full">
+      <div className="overflow-x-auto shadow-md rounded-lg">
+        <table className="min-w-full text-sm border-collapse">
+          <thead className="bg-blue-50 text-gray-700 font-semibold sticky top-0">
             <tr>
               {[
                 "Identificación",
@@ -106,7 +106,7 @@ const TableMonitoreoObligaciones = ({
               ].map((header) => (
                 <th
                   key={header}
-                  className="p-3 border-b border-gray-200 whitespace-nowrap text-sm md:text-base"
+                  className="p-3 border-b bg-[#1e1e58] text-white whitespace-nowrap text-sm md:text-base"
                 >
                   {header}
                 </th>
