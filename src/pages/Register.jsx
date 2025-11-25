@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { registerService } from "../services/AuthService";
 import LogoContaNotify from "../assets/logo_contanotify_v4.svg";
 import UndrawMobileDevices from "../assets/undraw_mobile-devices.svg";
+import PrivacityTerms from "./PrivacityTerms";
+import TermsConditions from "./TermsConditions";
 
 export default function Register() {
   const navigate = useNavigate();
@@ -95,6 +97,7 @@ export default function Register() {
       setSuccess("Registro exitoso. Redirigiendo al inicio de sesión...");
       setTimeout(() => navigate("/login"), 2000);
     } catch (err) {
+      console.log(err);
       setError(
         "No se pudo completar el registro. Verifica tus datos e inténtalo nuevamente."
       );
@@ -318,34 +321,11 @@ export default function Register() {
         />
       </div>
 
-      {/* 🧾 Modal Términos */}
+      {/* 🧾 Terminos y condiciones */}
       {showTerms && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white p-6 rounded-2xl shadow-xl max-w-lg w-full animate-fadeIn">
-            <h3 className="text-xl font-bold mb-3">Términos de Servicio</h3>
-            <p className="text-sm text-gray-700 overflow-y-auto max-h-64 mb-4">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer
-              euismod libero nec sem tempor, sit amet vestibulum arcu interdum.
-              Suspendisse potenti. Cras tincidunt velit eget ligula facilisis
-              gravida.
-            </p>
-            <div className="flex justify-end space-x-3">
-              <button
-                onClick={() => setShowTerms(false)}
-                className="px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 transition"
-              >
-                Cancelar
-              </button>
-              <button
-                onClick={() => {
-                  setAcceptedTerms(true);
-                  setShowTerms(false);
-                }}
-                className="px-4 py-2 bg-[#1e1e58] text-white rounded-md hover:bg-blue-600 transition"
-              >
-                Aceptar
-              </button>
-            </div>
+          <div className="bg-white p-6 custom-max-w rounded-2xl shadow-xl max-w-lg w-full animate-fadeIn">
+            <TermsConditions setShowTerms={setShowTerms} setAcceptedTerms={setAcceptedTerms}/>
           </div>
         </div>
       )}
@@ -353,31 +333,8 @@ export default function Register() {
       {/* 🧾 Modal Privacidad */}
       {showPrivacy && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white p-6 rounded-2xl shadow-xl max-w-lg w-full animate-fadeIn">
-            <h3 className="text-xl font-bold mb-3">Política de Privacidad</h3>
-            <p className="text-sm text-gray-700 overflow-y-auto max-h-64 mb-4">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed sit
-              amet dolor in nulla faucibus dignissim. Mauris imperdiet libero
-              sit amet nisl aliquet, in egestas elit tincidunt. Nunc vitae
-              efficitur arcu, non interdum velit.
-            </p>
-            <div className="flex justify-end space-x-3">
-              <button
-                onClick={() => setShowPrivacy(false)}
-                className="px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 transition"
-              >
-                Cancelar
-              </button>
-              <button
-                onClick={() => {
-                  setAcceptedPrivacy(true);
-                  setShowPrivacy(false);
-                }}
-                className="px-4 py-2 bg-[#1e1e58] text-white rounded-md hover:bg-blue-600 transition"
-              >
-                Aceptar
-              </button>
-            </div>
+          <div className="bg-white p-6 custom-max-w rounded-2xl shadow-xl max-w-lg w-full animate-fadeIn">
+            <PrivacityTerms setShowPrivacy={setShowPrivacy} setAcceptedPrivacy={setAcceptedPrivacy}/>
           </div>
         </div>
       )}
