@@ -14,13 +14,13 @@ const TableObligaciones = ({
   onNext,
   onDelete,
 }) => {
-
   return (
     <div>
-      <div className="overflow-x-auto">
+      <div className="overflow-x-auto overflow-x-auto shadow-md rounded-lg bg-white">
         <table className="w-full border-collapse">
           <thead>
-            <tr className="bg-blue-50 text-left">
+            <tr className="bg-[#1e1e58] text-left text-white">
+              <th className="p-3 border-b">Identidad</th>
               <th className="p-3 border-b">Nombre</th>
               <th className="p-3 border-b">Entidad</th>
               <th className="p-3 border-b">Renta</th>
@@ -39,11 +39,12 @@ const TableObligaciones = ({
             ) : obligaciones.length > 0 ? (
               obligaciones.map((c) => (
                 <tr key={c.id} className="hover:bg-slate-50 transition">
+                  <td className="p-3 border-b">{c.identidadCliente}</td>
                   <td className="p-3 border-b">{c.nombreCliente}</td>
-                  <td className="p-3 border-b">{c.entidad}</td>
+                  <td className="p-3 border-b">{c.entidad.toUpperCase()}</td>
                   <td className="p-3 border-b">{c.renta}</td>
-                  <td className="p-3 border-b">{c.pago}</td>
-                  <td className="p-3 border-b">{dayjs(c.fecha).format("DD [de] MMMM [de] YYYY")}</td>
+                  <td className="p-3 border-b">{c.pago.toUpperCase()}</td>
+                  <td className="p-3 border-b">{dayjs(c.fecha).format("DD [de] MMMM [de] YYYY").toUpperCase()}</td>
                   <td className="p-3 border-b text-center">
                     <button
                       onClick={() => onDelete(c.id)}

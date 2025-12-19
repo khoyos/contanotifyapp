@@ -1,8 +1,7 @@
 import axios from "axios";
 import { toast } from "react-toastify";
 
-const API_URL = "http://localhost:8080/api/clientes";
-const API_URL_REGISTRE = "http://localhost:8080/api/auth/register";
+const API_URL = `${import.meta.env.VITE_API_URL}/clientes`;
 
 const getAuthHeaders = () => {
   const token = localStorage.getItem("token");
@@ -58,8 +57,10 @@ export const obtenerClientes = async (page = 0, size = 5, filtros = {}) => {
       page,
       size,
       ...(filtros.nombre && { nombre: filtros.nombre }),
+      ...(filtros.razonSocial && { razonSocial: filtros.razonSocial }),
       ...(filtros.documento && { documento: filtros.documento }),
       ...(filtros.email && { email: filtros.email }),
+      ...(localStorage.getItem("userId") && { idContador: localStorage.getItem("userId") }),
     });
 
     const { data } = await axios.get(`${API_URL}?${params.toString()}`, {
@@ -114,7 +115,7 @@ export const actualizarCliente = async (id, clienteData) => {
 export const eliminarCliente = async (id) => {
   try {
     await axios.delete(`${API_URL}/${id}`, { headers: getAuthHeaders() });
-    toast.info("Cliente eliminado correctamente");
+    //toast.info("Cliente eliminado correctamente");
   } catch (error) {
     const message =
       error.response?.data?.message ||

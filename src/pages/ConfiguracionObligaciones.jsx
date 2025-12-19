@@ -21,6 +21,7 @@ const ConfiguracionObligaciones = () => {
   const [totalPages, setTotalPages] = useState(0);
   const [loading, setLoading] = useState(false);
   const [filtros, setFiltros] = useState({
+    identidadCliente: "",
     nombre: "",
     entidad: "",
     renta: "",
@@ -38,8 +39,6 @@ const ConfiguracionObligaciones = () => {
   const [rentaData, setRentaData] = useState({ id: "", name: "" });
   const [pagoData, setPagoData] = useState({ id: "", name: "" });
   const [cliente, setCliente] = useState("");
-
-  const navigate = useNavigate();
 
   const initialFormConfig = {
     tipoDocumento: "",
@@ -97,30 +96,12 @@ const ConfiguracionObligaciones = () => {
 
     if (!id) return;
 
-    try {
-      setLoadingPagos(true);
-      const data = await obtenerPagosPorRenta(id);
-      if (Array.isArray(data.pagos) && data.pagos.length > 0) {
+    const selectedRentaObj = obligacionesList.find(r => r.id === e.target.value);
 
-        const selectedRentaObj = obligacionesList.find(r => r.id === e.target.value);
+    console.log("selectedRentaObj", selectedRentaObj);
 
-        setRentaData({
-          id: formConfig.renta,
-          name: selectedRentaObj.name
-        });
+    setRentaData({ id: formConfig.renta, name: selectedRentaObj.name });
 
-        setPagos(data.pagos);
-        setErrorPagos(false);
-      } else {
-        setPagos([]);
-        setErrorPagos(true);
-      }
-    } catch (error) {
-      setErrorPagos(true);
-      setPagos([]);
-    } finally {
-      setLoadingPagos(false);
-    }
   };
 
 
@@ -135,21 +116,6 @@ const ConfiguracionObligaciones = () => {
         name: selectedEntidadObj.name
       });
 
-    }
-  };
-
-  // Al cambiar el pago
-  const handlePagoChange = (e) => {
-    const selectedId = e.target.value;
-    const selectedPagoObj = pagos.find((ent) => ent.id === selectedId);
-    formConfig.pago = selectedId;
-    setSelectedPago(selectedId);
-    if (selectedPagoObj) {
-      console.log("Pago seleccionado:", selectedPagoObj);
-      setPagoData({
-        id: selectedPagoObj.id,
-        name: selectedPagoObj.nombre
-      })
     }
   };
 
@@ -206,7 +172,7 @@ const ConfiguracionObligaciones = () => {
   const handleGuardarTodo = async () => {
     try {
       //Guardar configuración del cliente
-      //console.log("Guardando configuración del cliente...", formConfig);
+      console.log("Guardando configuración del cliente...", formConfig);
 
       const request = {
         usuarioId: localStorage.getItem("userId"),
@@ -230,25 +196,28 @@ const ConfiguracionObligaciones = () => {
       //Construir la obligación usando el ID obtenido
       const obligacionData = {
         usuarioClienteId: localStorage.getItem("clienteId"),
-        pagoId: formConfig.pago, // suponiendo que selectedRenta representa la obligación seleccionada
+        obligacionRentaId: formConfig.renta, // suponiendo que selectedRenta representa la obligación seleccionada
       };
 
       //Guardar la obligación
       const obligacionResponse = await guardarObligacionCliente(obligacionData);
-      //console.log("Respuesta de obligación:", obligacionResponse);
+      console.log("obligacionResponse ==>", obligacionResponse);
+      obligacionResponse.pagos.map(async (pago)=>{
+        const configuracionObligacionData = {
+          usuarioId: localStorage.getItem("userId"),
+          clienteId: localStorage.getItem("clienteId"),
+          identidadCliente: formConfig.documento,
+          nombreCliente: cliente,
+          entidad: entidadData.name,
+          renta: rentaData.name,
+          pago: pago.nombrePago,
+          fecha: pago.fecha,
+          obligacionClienteId: pago.obligacionClienteId,
+          periodo: pago.periodo
+        };     
+         await guardarConfiguracionObligaciones(configuracionObligacionData);
+      });
 
-      const configuracionObligacionData = {
-        usuarioId: localStorage.getItem("userId"),
-        clienteId: localStorage.getItem("clienteId"),
-        nombreCliente: cliente,
-        entidad: entidadData.name,
-        renta: rentaData.name,
-        pago: pagoData.name,
-        fecha: obligacionResponse.fecha,
-        obligacionClienteId: obligacionResponse.obligacionClienteId
-      };
-
-      await guardarConfiguracionObligaciones(configuracionObligacionData)
       //console.log("Respuesta de configuracion obligacion data:", configuracionObligacionData);
 
       toast.success("Obligación registrada correctamente");
@@ -274,7 +243,7 @@ const ConfiguracionObligaciones = () => {
   const cargarConfiguracionObligaciones = async (pagina = 0, filtrosActuales = filtros) => {
     try {
       setLoading(true);
-      const data = await obtenerConfiguracionObligaciones(pagina, 5, filtrosActuales);
+      const data = await obtenerConfiguracionObligaciones(pagina, 10, filtrosActuales);
       setConfiguracionObligacionesList(data.content || []);
       setTotalPages(data.totalPages || 1);
       setPage(pagina);
@@ -318,7 +287,7 @@ const ConfiguracionObligaciones = () => {
           </h2>
           <button
             onClick={handleGuardarTodo}
-            className="flex items-center justify-center gap-2 px-4 sm:px-5 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition w-full sm:w-auto"
+            className="flex items-center justify-center gap-2 px-4 sm:px-5 py-2 bg-[#3b82f6] hover:bg-blue-700 text-white rounded-lg transition w-full sm:w-auto"
           >
             <Save size={18} /> Guardar
           </button>
@@ -339,7 +308,7 @@ const ConfiguracionObligaciones = () => {
               name="tipoDocumento"
               value={formConfig.tipoDocumento}
               onChange={handleChangeConfig}
-              className="border rounded-md p-2 w-full"
+              className="focus:ring-2 focus:ring-blue-300 outline-none border rounded-md p-2 w-full"
             >
               <option value="">Seleccione...</option>
               <option value="NIT">NIT</option>
@@ -356,7 +325,7 @@ const ConfiguracionObligaciones = () => {
                 value={formConfig.documento}
                 onChange={handleChangeConfig}
                 onKeyDown={handleKeyPress}
-                className="border rounded-md p-2 w-full"
+                className="focus:ring-2 focus:ring-blue-300 outline-none border rounded-md p-2 w-full"
                 placeholder="Ingrese documento"
               />
               <Search
@@ -390,11 +359,11 @@ const ConfiguracionObligaciones = () => {
               name="entidad"
               value={selectedEntidad}
               onChange={handleEntidadChange}
-              className="border rounded-md p-2 w-full"
+              className="focus:ring-2 focus:ring-blue-300 outline-none border rounded-md p-2 w-full"
             >
               <option value="">Seleccione...</option>
               {entidadesList.map((entidad, idx) => (
-                <option key={idx} value={entidad.id}>
+                <option key={idx} value={entidad.id} className="capitalize">
                   {entidad.name}
                 </option>
               ))}
@@ -410,7 +379,7 @@ const ConfiguracionObligaciones = () => {
               name="renta"
               value={selectedRenta}
               onChange={handleRentaChange}
-              className="border rounded-md p-2 w-full"
+              className="border rounded-md p-2 w-full focus:ring-2 focus:ring-blue-300 outline-none border rounded-md p-2 w-full"
             >
               <option value="">Seleccione...</option>
               {obligacionesList.map((obligacion, idx) => (
@@ -421,38 +390,7 @@ const ConfiguracionObligaciones = () => {
             </select>
           </div>
 
-          {/* --- Pagos --- */}
-          <div className="sm:col-span-2">
-            <label className="block text-sm text-gray-700 mb-1">Pagos:</label>
-            <select
-              name="pago"
-              value={selectedPago}
-              onChange={handlePagoChange}
-              className={`border rounded-md p-2 w-full ${errorPagos ? "border-red-500 bg-red-50" : "border-gray-300"
-                }`}
-              disabled={loadingPagos || !selectedRenta}
-            >
-              <option value="">
-                {loadingPagos
-                  ? "Cargando pagos..."
-                  : errorPagos
-                    ? "Sin resultados"
-                    : "Seleccione..."}
-              </option>
 
-              {pagos.map((pago) => (
-                <option key={pago.id} value={pago.id}>
-                  {pago.nombre || pago.descripcion || pago.id}
-                </option>
-              ))}
-            </select>
-
-            {errorPagos && (
-              <p className="text-red-600 text-sm mt-2">
-                No se encontró ningún pago con la renta seleccionada.
-              </p>
-            )}
-          </div>
         </div>
 
         {/* --- Switches --- */}
@@ -503,11 +441,20 @@ const ConfiguracionObligaciones = () => {
               <div className="flex flex-wrap gap-2 w-full">
                 <input
                   type="text"
+                  name="identidadCliente"
+                  value={filtros.identidadCliente}
+                  onChange={handleChange}
+                  placeholder="Buscar por Identidad"
+                  className="border rounded-md p-2 w-full focus:ring-2 focus:ring-blue-300 outline-none flex-1 min-w-[130px]"
+                />
+
+                <input
+                  type="text"
                   name="nombre"
                   value={filtros.nombre}
                   onChange={handleChange}
                   placeholder="Buscar por Nombre"
-                  className="border rounded-md p-2 flex-1 min-w-[130px]"
+                  className="border rounded-md p-2 w-full focus:ring-2 focus:ring-blue-300 outline-none flex-1 min-w-[130px]"
                 />
 
                 <input
@@ -516,7 +463,7 @@ const ConfiguracionObligaciones = () => {
                   value={filtros.entidad}
                   onChange={handleChange}
                   placeholder="Buscar por Entidad"
-                  className="border rounded-md p-2 flex-1 min-w-[130px]"
+                  className="border rounded-md p-2 w-full focus:ring-2 focus:ring-blue-300 outline-none flex-1 min-w-[130px]"
                 />
 
                 <input
@@ -525,7 +472,7 @@ const ConfiguracionObligaciones = () => {
                   value={filtros.renta}
                   onChange={handleChange}
                   placeholder="Buscar por Renta"
-                  className="border rounded-md p-2 flex-1 min-w-[130px]"
+                  className="border rounded-md p-2 w-full focus:ring-2 focus:ring-blue-300 outline-none flex-1 min-w-[130px]"
                 />
 
                 <input
@@ -534,7 +481,7 @@ const ConfiguracionObligaciones = () => {
                   value={filtros.pago}
                   onChange={handleChange}
                   placeholder="Buscar por Pago"
-                  className="border rounded-md p-2 flex-1 min-w-[130px]"
+                  className="border rounded-md p-2 w-full focus:ring-2 focus:ring-blue-300 outline-none flex-1 min-w-[130px]"
                 />
 
                 <input
@@ -543,9 +490,9 @@ const ConfiguracionObligaciones = () => {
                   value={filtros.fecha}
                   onChange={handleChange}
                   placeholder="Fecha (YYYY-MM-DD)"
-                  className="border rounded-md p-2 flex-1 min-w-[180px]"
+                  className="border rounded-md p-2 w-full focus:ring-2 focus:ring-blue-300 outline-none flex-1 min-w-[180px]"
                 />
-                <button className="flex items-center justify-center gap-2 bg-green-600 hover:bg-green-700 text-white rounded-md p-2 transition">
+                <button className="flex items-center justify-center gap-2 bg-[#3b82f6] hover:bg-blue-700 text-white rounded-md p-2 transition">
                   <Search size={18} /> Buscar
                 </button>
               </div>

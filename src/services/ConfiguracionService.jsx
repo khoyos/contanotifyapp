@@ -2,7 +2,7 @@
 import axios from "axios";
 import { toast } from "react-toastify";
 
-const API_URL = "http://localhost:8080/api";
+const API_URL = `${import.meta.env.VITE_API_URL}`;
 
 // Función auxiliar para agregar headers con token JWT
 const getAuthHeaders = () => {
@@ -78,19 +78,23 @@ export const guardarConfiguracionObligaciones = async (data) => {
 
 
 // Obtener lista paginada
-export const obtenerConfiguracionObligaciones = async (page = 0, size = 5, filtros = {}) => {
+export const obtenerConfiguracionObligaciones = async (page = 0, size = 10, filtros = {}) => {
   try {
 
     const params = new URLSearchParams({
         page,
         size,
+        ...(filtros.identidadCliente && { identidadCliente: filtros.identidadCliente }),
         ...(filtros.nombre && { nombre: filtros.nombre }),
         ...(filtros.entidad && { entidad: filtros.entidad }),
         ...(filtros.renta && { renta: filtros.renta }),
         ...(filtros.pago && { pago: filtros.pago }),
         ...(filtros.fecha && { fecha: filtros.fecha }),
+        ...(filtros.estado && { estado: filtros.estado }),
+        ...(localStorage.getItem("userId") && { idContador: localStorage.getItem("userId") }),
      });
-    
+    console.log("params ok", params);
+
     const { data } = await axios.get(`${API_URL}/obligacioncliente/obligaciones?${params.toString()}`, {
       headers: getAuthHeaders(),
     });
