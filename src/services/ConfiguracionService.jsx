@@ -2,7 +2,7 @@
 import axios from "axios";
 import { toast } from "react-toastify";
 
-const API_URL = "http://localhost:8080/api";
+const API_URL = `${import.meta.env.VITE_API_URL}`;
 
 // Función auxiliar para agregar headers con token JWT
 const getAuthHeaders = () => {
