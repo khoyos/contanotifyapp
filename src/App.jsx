@@ -12,6 +12,8 @@ import ConfiguracionObligaciones from "./pages/ConfiguracionObligaciones";
 import ClienteForm from "./components/cliente/ClienteForm";
 import Register from "./pages/Register";
 import MonitoreoObligaciones from "./pages/MonitoreoObligaciones";
+import ForgotPassword from './pages/ForgotPassword';
+import ResetPassword from "./pages/ResetPassword";
 
 export default function App() {
   return (
@@ -21,6 +23,8 @@ export default function App() {
         <Route path="/" element={<Landing />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
         
         {/* Rutas privadas */}
         <Route element={<PrivateRoute />}>

@@ -9,7 +9,7 @@ export default function Login() {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [showPassword, setShowPassword] = useState(false); // 👈 Nuevo estado
+  const [showPassword, setShowPassword] = useState(false); // Nuevo estado
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 

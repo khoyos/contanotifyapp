@@ -39,6 +39,38 @@ export const registerService = async (nombre, email, password) => {
   }
 };
 
+// Forgot Password Service
+export const forgotPasswordService = async (email) => {
+  try {
+    const userData = {
+      email,
+    };
+
+    const response = await axios.post(`${API_URL}/request-reset`, userData);
+    return response.data;
+  } catch (error) {
+    console.error("Error en forgotPasswordService:", error);
+    throw new Error(error.response?.data?.error || "Error al cambiar la contraseña");
+  }
+};
+
+// Reset Password Service
+export const resetPasswordService = async (token, newPassword) => {
+  try {
+    const userData = {
+      token,
+      newPassword
+    };
+
+    const response = await axios.post(`${API_URL}/reset-password`, userData);
+    return response.data;
+  } catch (error) {
+    console.error("Error en resetPasswordService:", error);
+    return error.response?.data?.error;
+    //throw new Error(error.response?.data?.error || "Error al cambiar la contraseña");
+  }
+};
+
 export const logoutService = async () => {
   try {
     await axios.post(`${API_URL}/logout`);
