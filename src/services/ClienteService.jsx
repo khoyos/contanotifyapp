@@ -1,7 +1,8 @@
 import axios from "axios";
 import { toast } from "react-toastify";
 
-const API_URL = `${import.meta.env.VITE_API_URL}/clientes`;
+//const API_URL = `${import.meta.env.VITE_API_URL}/clientes`;
+const API_URL = `http://localhost:8080/api/clientes`;
 
 const getAuthHeaders = () => {
   const token = localStorage.getItem("token");

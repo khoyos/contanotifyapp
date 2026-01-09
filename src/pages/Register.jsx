@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { registerService } from "../services/AuthService";
+import { pay } from "../services/BillingService";
 import LogoContaNotify from "../assets/logo_contanotify_v4.svg";
 import UndrawMobileDevices from "../assets/undraw_mobile-devices.svg";
 import PrivacityTerms from "./PrivacityTerms";
@@ -8,19 +9,22 @@ import TermsConditions from "./TermsConditions";
 
 export default function Register() {
   const navigate = useNavigate();
+  const location = useLocation();
+  const plan = location.state?.plan;
 
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     password: "",
     confirmPassword: "",
+    plan: plan
   });
 
-  // ✅ Estados de aceptación
+  // Estados de aceptación
   const [acceptedTerms, setAcceptedTerms] = useState(false);
   const [acceptedPrivacy, setAcceptedPrivacy] = useState(false);
 
-  // ✅ Control de popups
+  // Control de popups
   const [showTerms, setShowTerms] = useState(false);
   const [showPrivacy, setShowPrivacy] = useState(false);
 
@@ -79,6 +83,12 @@ export default function Register() {
       setError("Las contraseñas no coinciden.");
       return;
     }
+
+    if (formData.plan !== formData.plan) {
+      setError("Las contraseñas no coinciden.");
+      return;
+    }
+
     if (!acceptedTerms || !acceptedPrivacy) {
       setError(
         "Debes aceptar los Términos de Servicio y la Política de Privacidad."
@@ -88,14 +98,18 @@ export default function Register() {
 
     setLoading(true);
     try {
-      await registerService(
+      const response = await registerService(
         formData.name.trim(),
         formData.email.toLowerCase().trim(),
-        formData.password
+        formData.password,
+        formData.plan
       );
-
+      console.log(response);
       setSuccess("Registro exitoso. Redirigiendo al inicio de sesión...");
-      setTimeout(() => navigate("/login"), 2000);
+      const result = await pay(response.user, formData.plan);
+      console.log("mercado pago", result);
+      window.location.href = result.url;      
+      //setTimeout(() => navigate("/login"), 2000);
     } catch (err) {
       console.log(err);
       setError(
@@ -258,7 +272,7 @@ export default function Register() {
               </div>
             </div>
 
-            {/* ✅ Casillas separadas */}
+            {/* Casillas separadas */}
             <div className="flex items-start text-sm space-x-2 mt-4">
               <input
                 type="checkbox"
@@ -321,7 +335,7 @@ export default function Register() {
         />
       </div>
 
-      {/* 🧾 Terminos y condiciones */}
+      {/* Terminos y condiciones */}
       {showTerms && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white p-6 custom-max-w rounded-2xl shadow-xl max-w-lg w-full animate-fadeIn">
@@ -330,7 +344,7 @@ export default function Register() {
         </div>
       )}
 
-      {/* 🧾 Modal Privacidad */}
+      {/* Modal Privacidad */}
       {showPrivacy && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white p-6 custom-max-w rounded-2xl shadow-xl max-w-lg w-full animate-fadeIn">

@@ -3,7 +3,8 @@ import axios from "axios";
 
 axios.defaults.withCredentials = true;
 
-const API_URL = `${import.meta.env.VITE_API_URL}/auth`;
+//const API_URL = `${import.meta.env.VITE_API_URL}/auth`;
+const API_URL = `http://localhost:8080/api/auth`;
 
 export const loginService = async (email, password) => {
   try {
@@ -23,16 +24,20 @@ export const loginService = async (email, password) => {
 };
 
 // Register Service
-export const registerService = async (nombre, email, password) => {
+export const registerService = async (nombre, email, password, plan) => {
   try {
     const userData = {
       nombre,
       email,
       password,
+      plan
     };
+
+    console.log("user Data plan", userData);
 
     const response = await axios.post(`${API_URL}/register`, userData);
     return response.data;
+
   } catch (error) {
     console.error("Error en registerService:", error);
     throw new Error(error.response?.data?.error || "Error al registrar usuario");

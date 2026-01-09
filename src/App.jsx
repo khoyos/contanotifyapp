@@ -14,6 +14,9 @@ import Register from "./pages/Register";
 import MonitoreoObligaciones from "./pages/MonitoreoObligaciones";
 import ForgotPassword from './pages/ForgotPassword';
 import ResetPassword from "./pages/ResetPassword";
+import PaymentSuccess from "./components/Payment/PaymentSuccess";
+import PaymentFailure from "./components/Payment/PaymentFailure";
+import PaymentPending from "./components/Payment/PaymentPending";
 
 export default function App() {
   return (
@@ -25,6 +28,10 @@ export default function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/reset-password" element={<ResetPassword />} />
+        {/* 🔔 RUTAS MERCADO PAGO */}
+        <Route path="/success" element={<PaymentSuccess />} />
+        <Route path="/failure" element={<PaymentFailure />} />
+        <Route path="/pending" element={<PaymentPending />} />
         
         {/* Rutas privadas */}
         <Route element={<PrivateRoute />}>

@@ -8,6 +8,7 @@ import UndrawFollowing from "../assets/undraw_following.svg";
 import UndrawNotify from "../assets/undraw_notify.svg";
 import UndrawTimeManagement from "../assets/undraw_time-management.svg";
 import { FaCheck } from "react-icons/fa";
+import Plan from "../components/Plan/Plan";
 
 export default function Landing() {
   return (
@@ -374,7 +375,7 @@ export default function Landing() {
       </section>
 
       {/* <!-- CTA Final Section --> */}
-      <section class="py-20 gradient-bg text-white">
+      {/* <section class="py-20 gradient-bg text-white">
         <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 class="text-3xl lg:text-4xl font-bold mb-6">
             ¿Listo para Transformar tu Práctica Contable?
@@ -449,13 +450,16 @@ export default function Landing() {
               Agendar Demo Personalizada
             </button>
           </div>
-
           <p class="text-sm mt-6 font-semibold">
             ¿Tienes preguntas? Contáctanos al +57 (1) 234-5678 o
             info@contanotify.com
           </p>
         </div>
-      </section>
+      </section> */}
+
+      <section>
+        <Plan/>
+      </section>      
 
       {/* <!-- Footer --> */}
       <footer class="bg-[#1e1e58] text-white py-12">
