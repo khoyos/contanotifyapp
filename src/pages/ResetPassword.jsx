@@ -26,9 +26,7 @@ export default function ResetPassword() {
     }
 
     try {
-      console.log("token", params);
       const resp=resetPasswordService(token, password);
-      console.log("response", resp.data);
       if(resp.data){
         setMessage("Contraseña actualizada correctamente");
         setTimeout(() => navigate("/login"), 10000);

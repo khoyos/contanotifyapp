@@ -28,7 +28,6 @@ const ClienteForm = () => {
         try {
           setLoading(true);
           const cliente = await obtenerClientePorId(id);
-          console.log("cliente.cliente", cliente.cliente);
           setFormData(cliente.cliente);
         } catch (error) {
           toast.error("Error al cargar cliente");

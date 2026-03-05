@@ -7,7 +7,6 @@ export default function Plans() {
   const navigate = useNavigate();
 
   const selectPlan = (planCode) => {
-    console.log("Plan Code", planCode);
     navigate("/register", { state: { plan: planCode } });
   };
 

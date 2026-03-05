@@ -85,7 +85,6 @@ export default function Dashboard() {
     try {
       const userId = localStorage.getItem("userId");
       const data = await obtenerAlertasCriticas(userId);
-      console.log("response data.alertas", data.alertas);
       setAlertas(data.alertas);
       setEstadisticas(data.estadisticas);
       setDataLinea(data.clientesConRentaPorMes);

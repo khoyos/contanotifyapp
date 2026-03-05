@@ -2,8 +2,8 @@
 import axios from "axios";
 import { toast } from "react-toastify";
 
-//const API_URL = `${import.meta.env.VITE_API_URL}`;
-const API_URL = `http://localhost:8080/api/`;
+const API_URL = `${import.meta.env.VITE_API_URL}`;
+//const API_URL = `${process.env.VITE_API_URL}/`;
 
 // Función auxiliar para agregar headers con token JWT
 const getAuthHeaders = () => {
@@ -94,9 +94,8 @@ export const obtenerConfiguracionObligaciones = async (page = 0, size = 10, filt
         ...(filtros.estado && { estado: filtros.estado }),
         ...(localStorage.getItem("userId") && { idContador: localStorage.getItem("userId") }),
      });
-    console.log("params ok", params);
 
-    const { data } = await axios.get(`${API_URL}/obligacioncliente/obligaciones?${params.toString()}`, {
+     const { data } = await axios.get(`${API_URL}/obligacioncliente/obligaciones?${params.toString()}`, {
       headers: getAuthHeaders(),
     });
     return data;
@@ -106,6 +105,46 @@ export const obtenerConfiguracionObligaciones = async (page = 0, size = 10, filt
       error.message ||
       "Error al obtener configuracion obligaciones";
     //toast.error(message);
+    throw error;
+  }
+};
+
+export const obtenerConfiguracionCliente= async () => {
+  try {
+    const { data } = await axios.get(
+      `${API_URL}/configurarcliente/by-user?userId=${localStorage.getItem("userId")}`,
+      {
+        headers: getAuthHeaders(),
+      }
+    );
+    //localStorage.setItem("config", data.config);
+    return data;
+  } catch (error) {
+    const message =
+      error.response?.data?.message ||
+      error.message ||
+      "Error al buscar cliente";
+    toast.error("No se encontró el cliente");
+    throw error;
+  }
+};
+
+export const actualizarConfiguracionCliente = async (data) => {
+    try {
+    const { data: response } = await axios.put(
+      `${API_URL}/configurarcliente/update`,
+      data,
+      { headers: getAuthHeaders() }
+    );
+
+    toast.success("Configuración del cliente actualizado correctamente");
+    return response;
+  } catch (error) {
+    const message =
+      error.response?.data?.message ||
+      error.message ||
+      "Error al guardar la configuración del cliente";
+    toast.error(message);
     throw error;
   }
 };

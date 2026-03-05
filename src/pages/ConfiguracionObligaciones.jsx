@@ -9,9 +9,8 @@ import {
 import { Save, Search, Edit, Trash2 } from "lucide-react";
 import { Switch } from "@headlessui/react";
 import { buscarClientePorIdentidad } from "../services/ClienteService";
-import { obtenerEntidades, obtenerObligaciones, obtenerPagosPorRenta } from "../services/MasterService";
+import { obtenerEntidades, obtenerObligaciones } from "../services/MasterService";
 import TableObligaciones from "../components/Obligacion/TableObligaciones";
-import { useNavigate } from "react-router-dom";
 
 const ConfiguracionObligaciones = () => {
   const [obligacionesList, setObligacionesList] = useState([]);
@@ -34,10 +33,8 @@ const ConfiguracionObligaciones = () => {
   const [selectedEntidad, setSelectedEntidad] = useState("");
   const [selectedPago, setSelectedPago] = useState("");
   const [errorPagos, setErrorPagos] = useState(false);
-  const [loadingPagos, setLoadingPagos] = useState(false);
   const [entidadData, setEntidadData] = useState({ id: "", name: "" });
   const [rentaData, setRentaData] = useState({ id: "", name: "" });
-  const [pagoData, setPagoData] = useState({ id: "", name: "" });
   const [cliente, setCliente] = useState("");
 
   const initialFormConfig = {
@@ -98,7 +95,6 @@ const ConfiguracionObligaciones = () => {
 
     const selectedRentaObj = obligacionesList.find(r => r.id === e.target.value);
 
-    console.log("selectedRentaObj", selectedRentaObj);
 
     setRentaData({ id: formConfig.renta, name: selectedRentaObj.name });
 
@@ -172,7 +168,6 @@ const ConfiguracionObligaciones = () => {
   const handleGuardarTodo = async () => {
     try {
       //Guardar configuración del cliente
-      console.log("Guardando configuración del cliente...", formConfig);
 
       const request = {
         usuarioId: localStorage.getItem("userId"),
@@ -185,11 +180,8 @@ const ConfiguracionObligaciones = () => {
         notificarEmail: true
       }
 
-      //console.log("Request configuración:", request);
       await guardarConfiguracionCliente(request);
 
-      // Validar respuesta y obtener el ID del cliente configurado
-      //console.log("Respuesta de configuración:", configResponse);
 
       toast.success("Configuración guardada correctamente");
 
@@ -201,7 +193,6 @@ const ConfiguracionObligaciones = () => {
 
       //Guardar la obligación
       const obligacionResponse = await guardarObligacionCliente(obligacionData);
-      console.log("obligacionResponse ==>", obligacionResponse);
       obligacionResponse.pagos.map(async (pago)=>{
         const configuracionObligacionData = {
           usuarioId: localStorage.getItem("userId"),
@@ -218,7 +209,6 @@ const ConfiguracionObligaciones = () => {
          await guardarConfiguracionObligaciones(configuracionObligacionData);
       });
 
-      //console.log("Respuesta de configuracion obligacion data:", configuracionObligacionData);
 
       toast.success("Obligación registrada correctamente");
 

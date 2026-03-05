@@ -4,6 +4,7 @@ import { BsPeopleFill } from "react-icons/bs";
 import { TbReportMoney } from "react-icons/tb";
 import { NavLink } from "react-router-dom";
 import { MdFactCheck } from "react-icons/md";
+import { PiFadersBold } from "react-icons/pi";
 
 const Sidebar = () => {
   const [isOpen, setIsOpen] = useState(true);
@@ -24,6 +25,7 @@ const Sidebar = () => {
     { path: "/home/clientes", name: "Crear Cliente", icon: <BsPeopleFill /> },
     { path: "/home/crear-obligaciones", name: "Crear Obligaciones", icon: <TbReportMoney /> },
     { path: "/home/monitoreo-obligaciones", name: "Monitoreo Obligaciones", icon: <MdFactCheck /> },
+    { path: "/home/configuracion-notificaciones", name: "Configuración", icon: <PiFadersBold /> },
   ];
 
   return (

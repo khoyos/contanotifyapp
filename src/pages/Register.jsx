@@ -10,7 +10,7 @@ import TermsConditions from "./TermsConditions";
 export default function Register() {
   const navigate = useNavigate();
   const location = useLocation();
-  const plan = location.state?.plan;
+  const plan = location.state?.plan ?? "FREE_TRIAL";
 
   const [formData, setFormData] = useState({
     name: "",
@@ -104,14 +104,15 @@ export default function Register() {
         formData.password,
         formData.plan
       );
-      console.log(response);
       setSuccess("Registro exitoso. Redirigiendo al inicio de sesión...");
+      if(formData.plan === "FREE_TRIAL"){
+        setTimeout(() => navigate("/login"), 2000);
+        return;
+      }
       const result = await pay(response.user, formData.plan);
-      console.log("mercado pago", result);
       window.location.href = result.url;      
       //setTimeout(() => navigate("/login"), 2000);
     } catch (err) {
-      console.log(err);
       setError(
         "No se pudo completar el registro. Verifica tus datos e inténtalo nuevamente."
       );

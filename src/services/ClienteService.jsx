@@ -1,8 +1,8 @@
 import axios from "axios";
 import { toast } from "react-toastify";
 
-//const API_URL = `${import.meta.env.VITE_API_URL}/clientes`;
-const API_URL = `http://localhost:8080/api/clientes`;
+const API_URL = `${import.meta.env.VITE_API_URL}/clientes`;
+//const API_URL = `${process.env.VITE_API_URL}/clientes`;
 
 const getAuthHeaders = () => {
   const token = localStorage.getItem("token");
@@ -34,7 +34,7 @@ export const crearCliente = async (clienteData) => {
 export const buscarClientePorIdentidad = async (tipoDocumento, documento) => {
   try {
     const { data } = await axios.get(
-      `${API_URL}/by-identity?tipoDocumento=${tipoDocumento}&documento=${documento}`,
+      `${API_URL}/by-identity?tipoDocumento=${tipoDocumento}&documento=${documento}&user=${localStorage.getItem("userId")}`,
       {
         headers: getAuthHeaders(),
       }

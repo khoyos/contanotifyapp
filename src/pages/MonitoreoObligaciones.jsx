@@ -28,7 +28,6 @@ const MonitoreoObligaciones = () => {
         setLoading(true);
         const data = await obtenerConfiguracionObligaciones(pagina, 10, filtrosActuales);
 
-        //console.log("Data obligaciones:", data.content);
 
         setObligacionesClientes(data.content || []);
         setTotalPages(data.totalPages || 1);

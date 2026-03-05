@@ -3,8 +3,8 @@ import axios from "axios";
 
 axios.defaults.withCredentials = true;
 
-//const API_URL = `${import.meta.env.VITE_API_URL}/auth`;
-const API_URL = `http://localhost:8080/api/auth`;
+const API_URL = `${import.meta.env.VITE_API_URL}/auth`;
+//const API_URL = `${process.env.VITE_API_URL}/auth`;
 
 export const loginService = async (email, password) => {
   try {
@@ -32,8 +32,6 @@ export const registerService = async (nombre, email, password, plan) => {
       password,
       plan
     };
-
-    console.log("user Data plan", userData);
 
     const response = await axios.post(`${API_URL}/register`, userData);
     return response.data;

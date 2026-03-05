@@ -19,7 +19,6 @@ export default function ForgotPassword() {
 
     try {
       const resp = await forgotPasswordService(email.toLowerCase());
-      console.log("resp forgot", resp);
       setMessage(
         "Si el correo existe en el sistema, recibirás un enlace para restablecer tu contraseña."
       );
