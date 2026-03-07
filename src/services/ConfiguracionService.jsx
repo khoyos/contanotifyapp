@@ -109,26 +109,6 @@ export const obtenerConfiguracionObligaciones = async (page = 0, size = 10, filt
   }
 };
 
-export const obtenerConfiguracionCliente= async () => {
-  try {
-    const { data } = await axios.get(
-      `${API_URL}/configurarcliente/by-user?userId=${localStorage.getItem("userId")}`,
-      {
-        headers: getAuthHeaders(),
-      }
-    );
-    //localStorage.setItem("config", data.config);
-    return data;
-  } catch (error) {
-    const message =
-      error.response?.data?.message ||
-      error.message ||
-      "Error al buscar cliente";
-    toast.error("No se encontró el cliente");
-    throw error;
-  }
-};
-
 export const actualizarConfiguracionCliente = async (data) => {
     try {
     const { data: response } = await axios.put(
@@ -147,4 +127,39 @@ export const actualizarConfiguracionCliente = async (data) => {
     toast.error(message);
     throw error;
   }
+};
+
+// services/ConfiguracionService.js
+
+export const buscarConfiguraciones = async (page = 0, size = 10, filtros = {}) => {
+  try {
+
+    const params = new URLSearchParams({
+      page,
+      size,
+      idContador: localStorage.getItem("userId"),
+      ...(filtros.nombre && { nombre: filtros.nombre }),
+      ...(filtros.documento && { documento: filtros.documento }),
+      ...(filtros.email && { email: filtros.email }),
+    });
+
+    const { data } = await axios.get(
+      `${API_URL}/configurarcliente/find?${params.toString()}`,
+      {
+        headers: getAuthHeaders(),
+      }
+    );
+
+    return data;
+
+  } catch (error) {
+    const message =
+      error.response?.data?.message ||
+      error.message ||
+      "Error al obtener configuración de clientes";
+    console.error(message);
+
+    throw error;
+  }
+
 };

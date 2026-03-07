@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Switch } from "@headlessui/react";
 import { Save, X } from "lucide-react";
-import {actualizarConfiguracionCliente, obtenerConfiguracionCliente} from '../services/ConfiguracionService'
+import {actualizarConfiguracionCliente} from '../services/ConfiguracionService'
 
 const ModalConfiguracionNotificaciones = ({ cliente, onClose, onSaved  }) => {
 
